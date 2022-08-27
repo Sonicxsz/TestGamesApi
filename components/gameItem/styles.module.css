@@ -12,6 +12,7 @@
 }
 
 .releseInfo{
+    display: block;
     color: #ffffff;
     margin-right: 8px;
 }

@@ -5,6 +5,7 @@ import styles from './styles.module.css'
 import cn from 'classnames'
 import { device } from '../../utils/size'
 
+
 const GameWrapper = styled.div`
     display: inline-block;
     width: 300px;
@@ -17,9 +18,10 @@ const GameWrapper = styled.div`
     margin-right: 10px;
    
     @media (${device.mobileL}){
-        width: 450px;
+        width: 400px;
         height: 420px;
     }
+    
     @media (${device.laptop}){
         width: 300px;
         height: 380px;
@@ -28,8 +30,15 @@ const GameWrapper = styled.div`
 `
 
 const GameImgWrapper = styled.div`
+    position: relative;
     width: 100%;
     height: 200px;
+    @media (${device.mobileL}){
+        height: 250px;
+    }
+    @media (${device.laptop}){
+        height: 200px;
+    }
 `
 
 const RatingBlock = styled.div`
@@ -50,23 +59,24 @@ const GameName = styled.h2`
     color: white;
 `
 
-function GameItem() {
+function GameItem({metacritic, background_image, name, released}) {
+
   return (
     <>
         <GameWrapper>
             <GameImgWrapper>
-                <Image src="https://media.rawg.io/media/resize/640/-/games/ba8/ba82c971336adfd290e4c0eab6504fcf.jpg" objectFit='fill'  width="300" height="200px" alt="game" />
+                {background_image  && <Image src={background_image } layout='fill' alt="game" />}
             </GameImgWrapper>
             <div style={{padding: '0 10px 0 10px'}}>
                 <div>
                     <div className={styles.ratingWrapper}>
                         <span className={styles.greenInfo}>Rating:</span>
-                        <RatingBlock>88</RatingBlock>
+                        <RatingBlock>{metacritic ? metacritic : 0}</RatingBlock>
                     </div>
                 </div>
-                    <span className={styles.releseInfo}>Release: 12.02.2000</span>
+                    <span className={styles.releseInfo}>Release: {released}</span>
                 
-                <GameName>Assasins CreedAssasins CreedAssasins Creed</GameName>
+                <GameName>{name}</GameName>
             </div>
     </GameWrapper>
     </>
