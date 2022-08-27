@@ -16,7 +16,9 @@ const GameWrapper = styled.div`
     overflow: hidden;
     margin-bottom: 10px;
     margin-right: 10px;
-   
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    
     @media (${device.mobileL}){
         width: 400px;
         height: 420px;
@@ -25,6 +27,10 @@ const GameWrapper = styled.div`
     @media (${device.laptop}){
         width: 300px;
         height: 380px;
+        :hover{
+            transform: scale(106%);
+            cursor: pointer;
+        }
     }
 
 `
@@ -59,8 +65,8 @@ const GameName = styled.h2`
     color: white;
 `
 
-function GameItem({metacritic, background_image, name, released}) {
-
+function GameItem({metacritic, background_image, name, released, platforms}) {
+    
   return (
     <>
         <GameWrapper>
@@ -70,8 +76,11 @@ function GameItem({metacritic, background_image, name, released}) {
             <div style={{padding: '0 10px 0 10px'}}>
                 <div>
                     <div className={styles.ratingWrapper}>
-                        <span className={styles.greenInfo}>Rating:</span>
-                        <RatingBlock>{metacritic ? metacritic : 0}</RatingBlock>
+                      
+                        <div>
+                            <span className={styles.greenInfo}>Rating:</span>
+                            <RatingBlock>{metacritic ? metacritic : 0}</RatingBlock>
+                        </div>
                     </div>
                 </div>
                     <span className={styles.releseInfo}>Release: {released}</span>

@@ -1,11 +1,11 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import styled from 'styled-components'
 import { device } from '../../utils/size'
 import Ps from '../../public/ps.svg'
 import Pc from '../../public/pc.svg'
 import Xb from '../../public/xb.svg'
 import MenuIcon from '../../public/menu.svg'
-
+import { Context } from '../../context'
 
 
 
@@ -21,18 +21,26 @@ position: relative;
 const FilterButton = styled.button`
 display: flex;
 align-items:center;
+justify-content:center;
+font-size:16px;
 width: 40px;
 height: 35px;
 background-color: unset;
 border: unset;
+color:white;
 border-radius: 5px;
 transition: all 0.2s linear;
 :hover{
-    background-color: rgb(20, 126, 233);
-}
-:active{
     background-color: rgb(94, 171, 247);
 }
+:active{
+    
+    background-color: rgb(20, 126, 233);
+}
+`
+
+const FilterButtonActive = styled(FilterButton)`
+    background-color: rgb(20, 126, 233);
 `
 
 const Filter = styled.div`
@@ -95,38 +103,39 @@ height:100%;
 const DropDownButton = styled.button`
     width: 100px;
     height: 50px;
-    padding: 10px 16px;
+    padding: 0 0 0 12px;
     background-color: hsla(0,0%,100%,.07);
     border-radius: 8px;
     border: unset;
-    font-size: 12px;
+    font-size: 10px;
     color: #fff;
     margin-left: 30px;
     text-align: start;
     position: relative;
     @media (${device.tablet}) {
         width: 150px;
-        font-size: 16px;
+        font-size: 14px;
     }
 `
 
 const DropDowm = styled.ul`
     position: absolute;
-    top: 25px;
+    top: 35px;
     left: 25px;
-    width: 160px;
+    width: 130px;
     height: auto;
     z-index: 999;
     color: rgb(40, 40, 40);
     background-color: #fff;
     border-radius: 10px;
+    
     li{
         display: flex;
         align-items: center;
         width: 100%;
-        height: 40px;
+        height: 30px;
         list-style-type: none;
-        padding: 0 0 0 20px;
+        padding: 0 0 0 15px;
         transition: all 0.2s linear;
     }
     li:first-child{
@@ -141,42 +150,76 @@ const DropDowm = styled.ul`
     li:active{
         background-color: rgb(94, 171, 247);
     }
+    @media (${device.tablet}) {
+        width: 160px;
+        font-size: 14px;
+        li{
+            height: 40px;
+            padding: 0 0 0 20px;
+        }
+    }
 `
 
 
 function Panel() {
-    const [showSort, setShowSort] = useState(false);
-    const [activeSort, setActiveSort] = useState(0);
-    const [showFilter, setFilter] = useState(false);
-    const sort = ['All', 'Release', 'Rating']
+    const [showSort, setShowSort] = useState(false); // показ сортировки
+    const [showFilter, setShowFilter] = useState(false); // показ фильтра на мобильном
+    const [activeSort, setActiveSort] = useState(0); // aктивная сортировка
+    const [activeFilter, setActiveFilter] = useState(3); // активный фильтр
+    ///////////////////////////////
+    const sort = ['Release up', 'Release down', 'Rating up', 'Rainting down'] //отрисовка сортировки
+    const sortValues = ['&ordering=-released', '&ordering=released', '&ordering=-metacritic&metacritic=1,100', '&ordering=metacritic&metacritic=1,100'] // значения сортировки для запроса
 
 
+ 
+    
+
+    const FilterIcons = [<Pc key={1}/>, <Ps key={2} />, <Xb key={3}/>, "ALL"];
+    const FilterValues = ['&platforms=4', '&platforms=18,187', '&platforms=1,14,186', '']
+
+    const {setActialPlatform, setOrder} = useContext(Context)
   return (
     <>
         <SettingPanel>
-               <div> <DropDownButton onClick={() => setShowSort(!showSort)}>Order by: {sort[activeSort]}</DropDownButton>
+               <div> <DropDownButton onClick={() => setShowSort(!showSort)}>Order: {sort[activeSort]}</DropDownButton>
                {showSort && <DropDowm>
                     {sort.map((i, ind) =>{
-                        return <li key={ind} >{i}</li>
+                        return <li onClick={() => {
+                            setShowSort(!showSort)
+                            setActiveSort(ind)
+                            setOrder(sortValues[ind])}} key={ind} >{i}</li>
                     })}
                 </DropDowm>}</div>
 
                 <Filter>
                     <BurgerButton>
                     <MenuIcon onClick={() =>{
-                        setFilter(!showFilter)
+                        setShowFilter(!showFilter)
                     }}/>
                     </BurgerButton>
                    
                     <DesctopMenu>
-                        <FilterButton><Ps/></FilterButton>
-                        <FilterButton><Pc/></FilterButton>
-                        <FilterButton><Xb/></FilterButton>
+                        {FilterIcons.map((i,ind) =>{
+                            return ind === activeFilter ? <FilterButtonActive key={ind}>{i}</FilterButtonActive> : <FilterButton key={ind}
+                                onClick={() =>{
+                                    setActiveFilter(ind)
+                                    setActialPlatform(FilterValues[ind])
+                                }}
+                            >{i}</FilterButton>
+                        })}
+                       
                     </DesctopMenu>
                     {showFilter && (<HamburgerMenu>
-                        <FilterButton><Ps/></FilterButton>
-                        <FilterButton><Pc/></FilterButton>
-                        <FilterButton><Xb/></FilterButton>
+                        {FilterIcons.map((i,ind) =>{
+                            return ind === activeFilter ? <FilterButtonActive key={ind}>{i}</FilterButtonActive> : 
+                            <FilterButton key={ind}
+                                onClick={() =>{
+                                    setActialPlatform(FilterValues[ind])
+                                    setActiveFilter(ind)
+                                    setShowFilter(!showFilter)
+                                }}
+                            >{i}</FilterButton>
+                        })}
                     </HamburgerMenu>)}
                 </Filter>
                

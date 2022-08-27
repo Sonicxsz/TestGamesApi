@@ -25,13 +25,14 @@ const Wrapper = styled.div`
     }
 
     @media (${device.laptopL}){
-        grid-template-columns: 50px 1fr 1fr 110px;
+        grid-template-columns: 100px 1fr 1fr 110px;
         grid-template-areas: 
         'header header header header'
         '. H1 H1 H1'
         '. sortWrapper sortWrapper .'
         '. body body body' ;
     }
+
 
     
 `
@@ -74,7 +75,6 @@ function Layout({children}) {
         <H1>New and trending</H1>
         <Panel/>
         <BodyContent>{children}</BodyContent>
-        
   </Wrapper>
   )
 }

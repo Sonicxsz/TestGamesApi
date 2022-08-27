@@ -1,45 +1,62 @@
 import Head from 'next/head'
 import GameItem from '../components/gameItem/gameItem'
 import Layout from '../layout/layout'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import GameService from '../services/GameService'
-
+import { Context } from '../context'
 
 
 
 export default function Home() {
-  const [games, setGames] = useState([])
-  const [page, setPage] = useState(1)
-  const {getAllGames} = GameService()
-  const [fetching, setFetching] = useState(false)
-  const xbox = 'platforms=1,186'
-  const psn = 'platforms=18,187'
-  const ps = 'platforms=4'
+  const [games, setGames] = useState([]) // массив игр для отрисовки
+  
+//настройки для запроса
+  const [page, setPage] = useState(1) // номер страницы 
+  const [actualPlatform, setActialPlatform] = useState('')//платформа
+  const [order, setOrder] = useState('&ordering=-metacritic&metacritic=1,100') // сортировка по рейтингу или дате выхода
+  
+  
+  const [fetching, setFetching] = useState(false) //запрос 
 
 
-const onRequest = (page) =>{
-    getAllGames(page)
+
+  const {getAllGames} = GameService() //сервис для запроса
+
+
+const onRequest = (page, order, platform) =>{
+    getAllGames(page, order, platform)
         .then(res => {
-          setGames(games => [...games, ...res])
+          setGames(games => [...games,...res])
           setPage(page => page + 1)
           setFetching(false)
         })
-    
+}
+
+const onFilterChangeRequest = ( order, platform ) =>{
+  getAllGames(1, order, platform)
+      .then(res => {
+        setGames(games => [...res])
+        setPage(page => page + 1)
+        setFetching(false)
+      })
 }
 
   useEffect(() =>{
-    onRequest(page)
-  
     document.addEventListener('scroll', scrollLoad)
-
+    
     return () =>{
       document.removeEventListener('scroll', scrollLoad)
     }
+    
   },[])
 
   useEffect(() =>{
+    onFilterChangeRequest(order, actualPlatform)
+  },[order, actualPlatform])
+
+  useEffect(() =>{
     if(fetching){
-      onRequest(page)
+      onRequest(page, order, actualPlatform)
     }
   },[fetching])
 
@@ -55,7 +72,10 @@ const onRequest = (page) =>{
 
   
   return (
-    <>
+    <Context.Provider value={{
+      setActialPlatform,
+      setOrder
+    }}>
     <Head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin />
@@ -63,13 +83,14 @@ const onRequest = (page) =>{
     </Head>
     <Layout>
         {games.length > 0 && games.map(i => {
-          return <GameItem key={i.id} 
+          return <GameItem key={i.id}
+          platforms={i.platforms} 
           name={i.name}
           metacritic={i.metacritic} 
           background_image={i.background_image}
           released={i.released}  />
         })}
     </Layout>
-    </>
+    </Context.Provider>
   )
 }
