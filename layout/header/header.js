@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import React from 'react'
 import styled from 'styled-components'
 import { device } from '../../utils/size'
@@ -8,8 +9,9 @@ const HeaderWrapper = styled.div`
     gap: 10px;
     grid-area: header;
     padding: 0 5px 0 5px;
+    position: relative;
     @media (${device.mobileL}) {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr 2fr;
         gap: 30px;
         width: 100%;
         height: 70px; 
@@ -26,9 +28,10 @@ const HeaderWrapper = styled.div`
 `
 const Logo = styled.div`
         display: none;
+        cursor: pointer;
     @media (${device.mobileL}) {
         display: flex;
-        justify-content: flex-end;
+        justify-content: center;
         align-items: center;
         font-size: 25px;
         font-weight: 900;
@@ -58,17 +61,26 @@ const SearchInput = styled.input`
 
 
 `
-
+const SearchDrop = styled.div`
+    position: absolute;
+    top: 55px;
+    left: 0;
+    width: 100%;
+    background:red;
+    z-index: 999;
+`
 
 function Header() {
   return (
 
     <HeaderWrapper>
-            <Logo>
-                RAWG
-            </Logo>
+            <Link href={'/'}>
+                <Logo>
+                    RAWG
+                </Logo>
+            </Link>
             <SearchInput placeholder='search' type="text" />
-           
+           <SearchDrop>ss</SearchDrop>
     </HeaderWrapper>
     
   )

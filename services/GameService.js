@@ -6,7 +6,6 @@ const GameService = () => {
   let _page = 1
  
     const getAllGames = async (page = _page, order = '', platform= '' ) =>{
-        console.log(`${_api}${_apiKey}&dates=2007-01-01,2023-12-31&page_size=16&page=${page}${order}${platform}`)
 
         let res = await axios(`${_api}${_apiKey}&dates=2007-01-01,2023-12-31&page_size=16&page=${page}${order}${platform}`)
 

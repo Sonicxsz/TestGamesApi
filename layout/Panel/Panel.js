@@ -4,21 +4,22 @@ import { device } from '../../utils/size'
 import Ps from '../../public/ps.svg'
 import Pc from '../../public/pc.svg'
 import Xb from '../../public/xb.svg'
+import Nt from '../../public/nt.svg'
 import MenuIcon from '../../public/menu.svg'
 import { Context } from '../../context'
 
 
 
 const SettingPanel = styled.div`
-display: flex;
-justify-content: start;
-grid-area: sortWrapper;
-margin-bottom: 30px;
-position: relative;
+    display: flex;
+    justify-content: start;
+    grid-area: panel;
+    margin-bottom: 30px;
+    position: relative;
 `
 
 
-const FilterButton = styled.button`
+export const FilterButton = styled.button`
 display: flex;
 align-items:center;
 justify-content:center;
@@ -55,7 +56,7 @@ color: #fff;
 margin-left: 30px;
 position: relative;
 @media (${device.tablet}) {
-    width: 200px;
+    width: 250px;
     height: 50px;
     padding: 10px 16px;
 }
@@ -100,7 +101,7 @@ height:100%;
 }
 `
 
-const DropDownButton = styled.button`
+export const DropDownButton = styled.button`
     width: 100px;
     height: 50px;
     padding: 0 0 0 12px;
@@ -137,6 +138,7 @@ const DropDowm = styled.ul`
         list-style-type: none;
         padding: 0 0 0 15px;
         transition: all 0.2s linear;
+        background-color:${props => props.current ? props.current : '#fff'};
     }
     li:first-child{
         border-radius: 10px 10px 0 0;
@@ -159,13 +161,13 @@ const DropDowm = styled.ul`
         }
     }
 `
-
+const FilterIcons = [<Pc key={1}/>, <Ps key={2}/>, <Xb key={3}/>, <Nt key={4}/>, "ALL"];
 
 function Panel() {
     const [showSort, setShowSort] = useState(false); // показ сортировки
     const [showFilter, setShowFilter] = useState(false); // показ фильтра на мобильном
-    const [activeSort, setActiveSort] = useState(0); // aктивная сортировка
-    const [activeFilter, setActiveFilter] = useState(3); // активный фильтр
+    const [activeSort, setActiveSort] = useState(2); // aктивная сортировка
+    const [activeFilter, setActiveFilter] = useState(4); // активный фильтр
     ///////////////////////////////
     const sort = ['Release up', 'Release down', 'Rating up', 'Rainting down'] //отрисовка сортировки
     const sortValues = ['&ordering=-released', '&ordering=released', '&ordering=-metacritic&metacritic=1,100', '&ordering=metacritic&metacritic=1,100'] // значения сортировки для запроса
@@ -174,22 +176,23 @@ function Panel() {
  
     
 
-    const FilterIcons = [<Pc key={1}/>, <Ps key={2} />, <Xb key={3}/>, "ALL"];
-    const FilterValues = ['&platforms=4', '&platforms=18,187', '&platforms=1,14,186', '']
+    
+    const FilterValues = ['&platforms=4', '&platforms=18,187', '&platforms=1,14,186','&platforms=7' , '']
 
     const {setActialPlatform, setOrder} = useContext(Context)
   return (
     <>
+   
         <SettingPanel>
-               <div> <DropDownButton onClick={() => setShowSort(!showSort)}>Order: {sort[activeSort]}</DropDownButton>
+               <> <DropDownButton onClick={() => setShowSort(!showSort)}>Order: {sort[activeSort]}</DropDownButton>
                {showSort && <DropDowm>
                     {sort.map((i, ind) =>{
-                        return <li onClick={() => {
+                        return ind === activeSort ? <li current="rgb(94, 171, 247)">{i}</li> : <li onClick={() => {
                             setShowSort(!showSort)
                             setActiveSort(ind)
-                            setOrder(sortValues[ind])}} key={ind} >{i}</li>
+                            setOrder(sortValues[ind])}} key={ind}>{i}</li>
                     })}
-                </DropDowm>}</div>
+                </DropDowm>}</>
 
                 <Filter>
                     <BurgerButton>

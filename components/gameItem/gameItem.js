@@ -4,7 +4,7 @@ import Image from 'next/image'
 import styles from './styles.module.css'
 import cn from 'classnames'
 import { device } from '../../utils/size'
-
+import Link from 'next/link'
 
 const GameWrapper = styled.div`
     display: inline-block;
@@ -47,16 +47,17 @@ const GameImgWrapper = styled.div`
     }
 `
 
-const RatingBlock = styled.div`
-    display: inline-block;
-    width: 30px;
-    height: 20px;
+export const RatingBlock = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items:center;
+    width: ${props => props.width ? props.width : '30px'};
+    height:  ${props => props.height ? props.height : '20px'};
     background: unset;
     border:2px solid #6dc849;
     color: #6dc849;
     border-radius: 5px;
-    text-align: center;
-    font-size: 14px;
+    font-size: ${props => props.fz ? props.fz : '14px'};
 `
 const GameName = styled.h2`
     display: inline-block;
@@ -65,13 +66,13 @@ const GameName = styled.h2`
     color: white;
 `
 
-function GameItem({metacritic, background_image, name, released, platforms}) {
+function GameItem({metacritic, background_image, name, released, platforms, id}) {
     
   return (
     <>
         <GameWrapper>
             <GameImgWrapper>
-                {background_image  && <Image src={background_image } layout='fill' alt="game" />}
+                {background_image  && <Image src={background_image} layout='fill' alt="game" />}
             </GameImgWrapper>
             <div style={{padding: '0 10px 0 10px'}}>
                 <div>
@@ -85,7 +86,7 @@ function GameItem({metacritic, background_image, name, released, platforms}) {
                 </div>
                     <span className={styles.releseInfo}>Release: {released}</span>
                 
-                <GameName>{name}</GameName>
+                <Link href={'/single/[id]'} as={`/single/${id}`}><GameName>{name}</GameName></Link>
             </div>
     </GameWrapper>
     </>

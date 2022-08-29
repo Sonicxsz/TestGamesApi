@@ -12,7 +12,7 @@ const Wrapper = styled.div`
     grid-template-areas: 
     'header'
     'H1'
-    'sortWrapper'
+    'panel'
     'body' ;
 
     @media (${device.mobileL}){
@@ -20,7 +20,7 @@ const Wrapper = styled.div`
         grid-template-areas: 
         '. header .'
         'H1 H1 H1'
-        'sortWrapper sortWrapper sortWrapper'
+        'panel panel panel'
         '. body .' ;
     }
 
@@ -29,7 +29,7 @@ const Wrapper = styled.div`
         grid-template-areas: 
         'header header header header'
         '. H1 H1 H1'
-        '. sortWrapper sortWrapper .'
+        '. panel panel .'
         '. body body body' ;
     }
 
@@ -55,7 +55,7 @@ const BodyContent = styled.div`
 `
 
 
-const H1 = styled.h1`
+export const H1 = styled.h1`
     grid-area: H1;
     padding-left: 30px;
     font-size: 33px;

@@ -7,11 +7,12 @@ import { Context } from '../context'
 
 
 
-export default function Home() {
-  const [games, setGames] = useState([]) // массив игр для отрисовки
-  
-//настройки для запроса
-  const [page, setPage] = useState(1) // номер страницы 
+
+export default function Home({results}) {
+  const [games, setGames] = useState(results) // массив игр для отрисовки
+  const [firstLoad, setFirstLoad] = useState(true) // предотвращения повторного запроса при первом рендеринге
+  //настройки для запроса
+  const [page, setPage] = useState(2) // номер страницы 
   const [actualPlatform, setActialPlatform] = useState('')//платформа
   const [order, setOrder] = useState('&ordering=-metacritic&metacritic=1,100') // сортировка по рейтингу или дате выхода
   
@@ -22,7 +23,7 @@ export default function Home() {
 
   const {getAllGames} = GameService() //сервис для запроса
 
-
+//Функция для запроса с автоматической дозагрузкой
 const onRequest = (page, order, platform) =>{
     getAllGames(page, order, platform)
         .then(res => {
@@ -32,6 +33,8 @@ const onRequest = (page, order, platform) =>{
         })
 }
 
+
+//Функция для запроса при изменении фильтра или сортировки
 const onFilterChangeRequest = ( order, platform ) =>{
   getAllGames(1, order, platform)
       .then(res => {
@@ -41,6 +44,8 @@ const onFilterChangeRequest = ( order, platform ) =>{
       })
 }
 
+
+  //Отслеж скролла для подгрузки
   useEffect(() =>{
     document.addEventListener('scroll', scrollLoad)
     
@@ -50,8 +55,15 @@ const onFilterChangeRequest = ( order, platform ) =>{
     
   },[])
 
+
+
   useEffect(() =>{
-    onFilterChangeRequest(order, actualPlatform)
+    if(!firstLoad){
+      onFilterChangeRequest(order, actualPlatform)
+    }
+    if(firstLoad){
+      setFirstLoad(false)
+    }
   },[order, actualPlatform])
 
   useEffect(() =>{
@@ -76,11 +88,11 @@ const onFilterChangeRequest = ( order, platform ) =>{
       setActialPlatform,
       setOrder
     }}>
-    <Head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin />
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
-    </Head>
+      <Head>
+        <title>All Games Page</title>
+        <meta name="keywords" content='games, pc, ps, xbox' />
+        <meta charset='utf-8'/>
+      </Head>
     <Layout>
         {games.length > 0 && games.map(i => {
           return <GameItem key={i.id}
@@ -88,9 +100,22 @@ const onFilterChangeRequest = ( order, platform ) =>{
           name={i.name}
           metacritic={i.metacritic} 
           background_image={i.background_image}
+          id={i.id}
           released={i.released}  />
         })}
     </Layout>
     </Context.Provider>
   )
+}
+
+
+//статический метод для реализации ssr и получения начальных данных для рендера страницы на сервере
+export async function getStaticProps(ctx){
+
+  let response = await fetch('https://api.rawg.io/api/games?key=ecde0efd01614fc68d0ef9efb4520852&dates=2007-01-01,2023-12-31&page_size=16&page=1&ordering=-metacritic&metacritic=1,100')
+
+  response = await response.json()
+  return {
+    props:response
+  }
 }
