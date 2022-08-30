@@ -1,12 +1,58 @@
 import React, { useState } from 'react'
 import Head from 'next/head'
-import InformationComponent from '../../components/InformationComponent/InformationComponent'
+import InformationComponent from '../../components/Information/Information'
 import styled from 'styled-components'
-import Header from '../../components/header/header'
-import { device } from '../../utils/size'
-import Slider from '../../components/slider/Slider'
-import MediaComponent from '../../components/mediaComponent/media'
-import AboutComponent from '../../components/about/about'
+import Header from '../../modules/header/header'
+import { device } from '../../common/utils/size'
+import Slider from '../../modules/slider/Slider'
+import MediaComponent from '../../components/media/media'
+import AboutComponent from '../../modules/about/about'
+
+
+function SingleGame(props) {
+  const {result, resultImages} = props;
+  const { background_image } = result;
+  const [showSlider, setShowSlider] = useState(false)
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const [fullText, setFullText] = useState(false)
+
+  return (
+
+    <Wrapper img={background_image}>
+       <Head>
+        <title>Single Page</title>
+        <meta name="keywords" content='games,nintendo, pc, ps, xbox' />
+        <meta charset='utf-8'/>
+      </Head>
+      <FilterWrapper>
+        <Header />
+        <Content>
+          <AboutComponent result={result} fullText={fullText}  setFullText={setFullText}/>
+          <MediaComponent setShowSlider={setShowSlider} setCurrentSlide={setCurrentSlide} results={resultImages.results} />
+          <InformationComponent  data={result}/>
+        </Content>
+        
+      </FilterWrapper>
+      {showSlider && <Slider closeSlider={setShowSlider} number={currentSlide} img={resultImages.results} />}
+       
+    </Wrapper>
+  )
+}
+
+
+
+export async function getServerSideProps({ params }) {
+  const response = await fetch(`https://api.rawg.io/api/games/${params.id}?key=ecde0efd01614fc68d0ef9efb4520852`)
+  const images = await fetch(`https://api.rawg.io/api/games/${params.id}/screenshots?key=ecde0efd01614fc68d0ef9efb4520852`)
+  const result = await response.json()
+  const resultImages = await images.json()
+  return {
+    props: { result, resultImages }
+  }
+}
+
+export default SingleGame
+
 
 const Wrapper = styled.div`
     width: 100%;
@@ -64,59 +110,3 @@ const Content = styled.div`
         gap: 10px;
     }    
 `
-
-
-
-
-
-
-
-
-function SingleGame({ result, resultImages }) {
-  const { background_image } = result;
-  const [showSlider, setShowSlider] = useState(false)
-  const [currentSlide, setCurrentSlide] = useState(0)
-  const [fullText, setFullText] = useState(false)
-
-
-
-
-
-  return (
-
-    <Wrapper img={background_image}>
-       <Head>
-        <title>Single Page</title>
-        <meta name="keywords" content='games,nintendo, pc, ps, xbox' />
-        <meta charset='utf-8'/>
-      </Head>
-      <FilterWrapper>
-        <Header />
-        <Content>
-          <AboutComponent result={result} fullText={fullText}  setFullText={setFullText}/>
-          <MediaComponent setShowSlider={setShowSlider} setCurrentSlide={setCurrentSlide} results={resultImages.results} />
-          <InformationComponent  data={result}/>
-        </Content>
-        
-      </FilterWrapper>
-      {showSlider && <Slider closeSlider={setShowSlider} number={currentSlide} img={resultImages.results} />}
-       
-    </Wrapper>
-  )
-}
-
-
-
-
-
-export default SingleGame
-
-export async function getServerSideProps({ params }) {
-  const response = await fetch(`https://api.rawg.io/api/games/${params.id}?key=ecde0efd01614fc68d0ef9efb4520852`)
-  const images = await fetch(`https://api.rawg.io/api/games/${params.id}/screenshots?key=ecde0efd01614fc68d0ef9efb4520852`)
-  const result = await response.json()
-  const resultImages = await images.json()
-  return {
-    props: { result, resultImages }
-  }
-}

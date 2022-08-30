@@ -6,7 +6,7 @@ export function useKey(key, cb){
 
     useEffect(() =>{
         callbackRef.current = cb
-    })
+    },[cb])
 
     useEffect(() =>{
         function handle(e){

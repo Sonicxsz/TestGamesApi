@@ -27,7 +27,8 @@ const Name = styled.span`
 
 
 function FoundGameItem(props) {
-   const {setSearchLocal, setServerSearch, setGames, link, img, text} = props
+   const {setSearchLocal, setServerSearch, setGames, link, img, text} = props;
+   
   return (
     <Link href={'/game/[id]'} as={`/game/${link}`}>
         

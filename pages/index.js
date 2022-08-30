@@ -1,22 +1,20 @@
 import Head from 'next/head'
 import GameItem from '../components/gameItem/gameItem'
-import Layout from '../layout/layout'
+import Layout from '../common/layout/layout'
 import { useState, useEffect } from 'react'
 import GameService from '../services/GameService'
-import { Context } from '../context'
+import { Context } from '../common/context'
 
 
+export default function Home(props) {
+  const {results} = props;
 
-
-export default function Home({results}) {
   const [games, setGames] = useState(results) // массив игр для отрисовки
   const [firstLoad, setFirstLoad] = useState(true) // предотвращения повторного запроса при первом рендеринге
   //настройки для запроса
   const [page, setPage] = useState(2) // номер страницы 
   const [actualPlatform, setActialPlatform] = useState('')//платформа
   const [order, setOrder] = useState('&ordering=-metacritic&metacritic=1,100') // сортировка по рейтингу или дате выхода
-    
-  
   const [fetching, setFetching] = useState(false) //запрос 
 
 
@@ -51,8 +49,7 @@ const onFilterChangeRequest = ( order, platform ) =>{
     
     return () =>{
       document.removeEventListener('scroll', scrollLoad)
-    }
-    
+    }   
   },[])
 
 

@@ -1,10 +1,22 @@
 import React from 'react'
 import styled from 'styled-components'
 import { device } from '../utils/size'
-import Panel from '../components/Panel/Panel'
-import Header from '../components/header/header'
+import Panel from '../../modules/Panel/Panel'
+import Header from '../../modules/header/header'
 
+function Layout({children}) { 
+   
+  return (
+  <Wrapper>
+        <Header />
+            <H1>New and trending</H1>
+        <Panel/>
+        <BodyContent>{children}</BodyContent>
+  </Wrapper>
+  )
+}
 
+export default Layout;
 
 const Wrapper = styled.div`
     display: grid;
@@ -66,17 +78,3 @@ export const H1 = styled.h1`
     }
     
 `
-
-function Layout({children}) { 
-   
-  return (
-  <Wrapper>
-        <Header />
-        <H1>New and trending</H1>
-        <Panel/>
-        <BodyContent>{children}</BodyContent>
-  </Wrapper>
-  )
-}
-
-export default Layout

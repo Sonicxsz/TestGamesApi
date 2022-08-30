@@ -2,8 +2,37 @@ import React from 'react'
 import styled from 'styled-components'
 import Image from 'next/image'
 import styles from './styles.module.css'
-import { device } from '../../utils/size'
+import { device } from '../../common/utils/size'
 import Link from 'next/link'
+
+
+
+function GameItem(props) {
+   const {metacritic, background_image, name, released, id} = props;
+   
+  return (
+    <>
+        <GameWrapper>
+            <GameImgWrapper>
+                {background_image  && <Image src={background_image} layout='fill' alt="game" />}
+            </GameImgWrapper>
+            <div style={{padding: '0 10px 0 10px'}}>
+                
+                    <RatingWrapper>
+                        <div className={styles.flex}>
+                            <span className={styles.greenInfo}>Rating:</span>
+                            <RatingBlock>{metacritic ? metacritic : 0}</RatingBlock>
+                        </div>
+                    </RatingWrapper>
+                
+                    <span className={styles.releseInfo}>Release: {released}</span>
+                
+                <Link href={'/game/[id]'} as={`/game/${id}`}><GameName>{name}</GameName></Link>
+            </div>
+    </GameWrapper>
+    </>
+  )
+}
 
 const GameWrapper = styled.div`
     display: inline-block;
@@ -72,31 +101,5 @@ const RatingWrapper = styled.div`
     margin-bottom: 10px;
 
 `
-
-function GameItem({metacritic, background_image, name, released, platforms, id}) {
-    
-  return (
-    <>
-        <GameWrapper>
-            <GameImgWrapper>
-                {background_image  && <Image src={background_image} layout='fill' alt="game" />}
-            </GameImgWrapper>
-            <div style={{padding: '0 10px 0 10px'}}>
-                
-                    <RatingWrapper>
-                        <div className={styles.flex}>
-                            <span className={styles.greenInfo}>Rating:</span>
-                            <RatingBlock>{metacritic ? metacritic : 0}</RatingBlock>
-                        </div>
-                    </RatingWrapper>
-                
-                    <span className={styles.releseInfo}>Release: {released}</span>
-                
-                <Link href={'/game/[id]'} as={`/game/${id}`}><GameName>{name}</GameName></Link>
-            </div>
-    </GameWrapper>
-    </>
-  )
-}
 
 export default GameItem
