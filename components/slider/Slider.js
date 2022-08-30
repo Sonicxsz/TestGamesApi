@@ -1,8 +1,9 @@
 import React,{useState, useEffect} from 'react'
 import Image from 'next/image'
 import {FaChevronLeft, FaChevronRight, FaRegWindowClose} from 'react-icons/fa'
-
+import { useKey } from '../../hooks/useKey'
 import styled from 'styled-components'
+import { device } from '../../utils/size'
 
 const Circle =styled.div`
     width: ${props => props.width ? props.width : '40px'};
@@ -39,13 +40,20 @@ const Window = styled.div`
     position: relative;
     width: 80%;
     height: 80%;
+    margin: auto;
 
 `
+const Side = styled.div`
+    display:inline-block;
+    width: 10%;
+    height: 100%;
+`
+
 
 const Control = styled.div`
     display: flex;
     gap: 20px;
-    margin-bottom: 10px;
+    margin-top: 5px;
 `
 
 const ModalWrapper = styled.div`
@@ -58,7 +66,7 @@ const ModalWrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items:center;
-    justify-content: center;
+    justify-content: space-between;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -67,21 +75,35 @@ const ModalWrapper = styled.div`
 `
 const CloseBtn = styled(Circle)`
     position: fixed;
-    right: 20px;
-    top: 20px;
+    bottom: 100px;
+    z-index: 999;
+    bottom: 60px;
+    @media(${device.laptop}){
+        right: 20px;
+        top: 20px;
+    }
 `
-
+const WindowWrap = styled(Window)`
+    width: 100%;
+    display:flex;
+    margin: 0 auto;
+`
 function Slider({img, number, closeSlider}) {
     const [pages, setPages] = useState([])
     
     const [current, setCurrent] = useState(number)
-
-
+    useKey('ArrowLeft', handlerClickPrev)
+    useKey('ArrowRight', handlerClickNext)
+    useKey('Escape', handleClose)
     useEffect(() =>{
         setPages(img)
     },[])
 
   
+    function handleClose(){
+        closeSlider(false)
+      }
+      
     
 
 
@@ -115,11 +137,13 @@ function Slider({img, number, closeSlider}) {
         <CloseBtn width='50px' height='50px' onClick={() => closeSlider(false)}>
             <FaRegWindowClose style={{width: '45px', height:'25px', color: 'white'}}/>
         </CloseBtn>
-    
-      <Window>
-                {pages.length > 0 && <Image src={pages[current].image} objectFit='scale-down' layout="fill" alt='img'/>}
-      </Window>
-
+        <WindowWrap>
+            <Side onClick={handlerClickPrev} />
+            <Window>
+                        {pages.length > 0 && <Image src={pages[current].image} objectFit='scale-down' layout="fill" alt='img'/>}
+            </Window>
+            <Side onClick={handlerClickNext} />
+        </WindowWrap>
       <Pagination>
         {pages.length > 0 && pages.map((i, ind) => {
             

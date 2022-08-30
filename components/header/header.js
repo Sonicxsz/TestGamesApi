@@ -3,7 +3,7 @@ import React,{useState, useEffect} from 'react'
 import styled from 'styled-components'
 import { device } from '../../utils/size'
 import debounce from 'lodash.debounce'
-import FindGameItem from './findGame';
+import FoundGameItem from './foundGame';
 const HeaderWrapper = styled.div`
     display: grid;
     grid-template-columns: 1fr;
@@ -120,7 +120,7 @@ function Header() {
             <SearchInput onChange={onChangeInp} value={searchLocal} placeholder='search' type="text" />
            {searchLocal.length > 1 && <SearchDrop>
              {games.map(i =>{
-                return <FindGameItem
+                return <FoundGameItem
                     setGames={setGames}
                     setSearchLocal={setSearchLocal}
                     setServerSearch={setServerSearch}

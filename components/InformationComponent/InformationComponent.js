@@ -42,7 +42,7 @@ function InformationComponent(props) {
     <Information>
             <InformationBlock>
               <span>Metascore</span>
-                <RatingBlock fz='20px' width='45px' height='35px'>{metacritic}</RatingBlock>
+                <RatingBlock fz='20px' width='45px' height='35px'>{metacritic ? metacritic : 0}</RatingBlock>
             </InformationBlock>
             <InformationBlock>
             <span>Release date</span>

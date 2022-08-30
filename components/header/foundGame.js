@@ -26,10 +26,10 @@ const Name = styled.span`
 `
 
 
-function FindGameItem(props) {
+function FoundGameItem(props) {
    const {setSearchLocal, setServerSearch, setGames, link, img, text} = props
   return (
-    <Link href={'/single/[id]'} as={`/single/${link}`}>
+    <Link href={'/game/[id]'} as={`/game/${link}`}>
         
     <FindGame onClick={() =>{
         setSearchLocal('')
@@ -46,4 +46,4 @@ function FindGameItem(props) {
   )
 }
 
-export default FindGameItem
+export default FoundGameItem

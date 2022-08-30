@@ -1,11 +1,7 @@
 import { useState, useContext } from 'react'
 import styled from 'styled-components'
 import { device } from '../../utils/size'
-import Ps from '../../public/ps.svg'
-import Pc from '../../public/pc.svg'
-import Xb from '../../public/xb.svg'
-import Nt from '../../public/nt.svg'
-import MenuIcon from '../../public/menu.svg'
+import {Pc, Ps, Xb, Nt, MenuIcon} from '../../public/icons'
 import { Context } from '../../context'
 
 

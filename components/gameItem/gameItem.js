@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import Image from 'next/image'
 import styles from './styles.module.css'
-import cn from 'classnames'
 import { device } from '../../utils/size'
 import Link from 'next/link'
 
@@ -68,7 +67,7 @@ const GameName = styled.h2`
 
 const RatingWrapper = styled.div`
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     margin-top: 10px;
     margin-bottom: 10px;
 
@@ -83,18 +82,17 @@ function GameItem({metacritic, background_image, name, released, platforms, id})
                 {background_image  && <Image src={background_image} layout='fill' alt="game" />}
             </GameImgWrapper>
             <div style={{padding: '0 10px 0 10px'}}>
-                <div>
+                
                     <RatingWrapper>
-                        <div>платформы</div>
                         <div className={styles.flex}>
                             <span className={styles.greenInfo}>Rating:</span>
                             <RatingBlock>{metacritic ? metacritic : 0}</RatingBlock>
                         </div>
                     </RatingWrapper>
-                </div>
+                
                     <span className={styles.releseInfo}>Release: {released}</span>
                 
-                <Link href={'/single/[id]'} as={`/single/${id}`}><GameName>{name}</GameName></Link>
+                <Link href={'/game/[id]'} as={`/game/${id}`}><GameName>{name}</GameName></Link>
             </div>
     </GameWrapper>
     </>
