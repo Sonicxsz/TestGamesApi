@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import { device } from '../utils/size'
-import Panel from './Panel/Panel'
-import Header from './header/header'
+import Panel from '../components/Panel/Panel'
+import Header from '../components/header/header'
 
 
 

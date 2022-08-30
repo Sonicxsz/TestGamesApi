@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react'
-import styles from './single.module.css'
+import React, { useState } from 'react'
+import InformationComponent from '../../components/InformationComponent/InformationComponent'
 import styled from 'styled-components'
-import Header from '../../layout/header/header'
+import Header from '../../components/header/header'
 import { H1 } from '../../layout/layout'
 import { device } from '../../utils/size'
 import Image from 'next/image'
@@ -9,12 +9,14 @@ import Ps from '../../public/ps.svg'
 import Pc from '../../public/pc.svg'
 import Xb from '../../public/xb.svg'
 import Nt from '../../public/nt.svg'
-import { RatingBlock } from '../../components/gameItem/gameItem'
+import Slider from '../../components/slider/Slider'
+
 const Wrapper = styled.div`
     width: 100%;
     height: 100vh;
     background: url(${props => props.img});
     background-size: cover;
+    position:relative;
     
 `
 const FilterWrapper = styled(Wrapper)`
@@ -119,10 +121,12 @@ const MainImg = styled.div`
     border-radius: 10px;
     overflow:hidden;
     margin: 10px auto;
+    transition: transform 0.3s ease;
     @media(${device.mobileL}){
       width:370px;
       height: 210px;
     }  
+
    
     @media(${device.tablet}){
       display: block;
@@ -133,6 +137,10 @@ const MainImg = styled.div`
     @media(${device.laptop}){
       width:320px;
       height: 220px;
+      :hover{
+        transform: scale(106%);
+        cursor: pointer;
+    }
     } 
     @media(${device.laptopL}){
       width:400px;
@@ -195,7 +203,7 @@ transition: all 0.2s linear;
 `
 const Title = styled.span`
   display:block;
-  max-height: ${props => props.fullText ? '600px' : '100px'};
+  max-height: ${props => props.fullText ? '600px' : '110px'};
   font-size:17px;
   position:relative;
   overflow:hidden;
@@ -227,41 +235,13 @@ const Platforms = styled.div`
 
 
 
-const Information = styled.div`
-  display: flex;
-  flex-flow: wrap;
-  justify-content: space-between;
-  width: 100%;
-  height: 220px;
-  background-color:#151515e4;
-  grid-area: information;
-  border-radius: 10px;
-  border:2px solid #6dc849;
-  
-`
-const InformationBlock = styled.div`
-  display:block;
-  width: 50%;
-  word-brek: break-all;
-  padding: 20px 40px;
-  span{
-    display:${props => props.block ? props.block : 'block'};
-    margin-bottom: 5px;
-  };
-  a{
-    display:block;
-    word-break: break-all;
-    width: 100%;
-    text-decoration: underline;
-    font-size:15px;
-  }
-`
+
 
 const FilterIcons = [<Pc key={1} />, <Ps key={2} />, <Xb key={3} />, <Nt key={4} />];
-function SingleGame({ result, params }) {
-  const { background_image, name, description_raw, platforms, website, released, metacritic, playtime } = result;
-  console.log(result)
-  const [imgs, setImgs] = useState([])
+function SingleGame({ result, resultImages }) {
+  const { background_image, name, description_raw, platforms, website, released, metacritic, playtime, developers, publishers } = result;
+  const [showSlider, setShowSlider] = useState(false)
+  const [currentSlide, setCurrentSlide] = useState(0)
   const [fullText, setFullText] = useState(false)
 
 
@@ -274,19 +254,11 @@ function SingleGame({ result, params }) {
 
   platform = [...new Set(platform)]
 
-
-  useEffect(() => {
-    fetch(`https://api.rawg.io/api/games/${params.id}/screenshots?key=ecde0efd01614fc68d0ef9efb4520852`)
-      .then(res => res.json())
-      .then(res => res.results)
-      .then(res => setImgs(res))
-  }, [])
-
   return (
 
     <Wrapper img={background_image}>
 
-      <FilterWrapper className={styles.filter}>
+      <FilterWrapper>
         <Header />
         <Content>
           <About>
@@ -305,14 +277,20 @@ function SingleGame({ result, params }) {
 
           </About>
           <Media>
-            <MainImg>
-              {imgs.length > 0 && <Image src={imgs[0].image} alt='photo' objectFit='fill' layout='fill' />}
+            <MainImg
+              onClick={() => {setShowSlider(true)}}
+            >
+              {resultImages.results.length > 0 && <Image src={resultImages.results[0].image} alt='photo' objectFit='fill' layout='fill' />}
             </MainImg>
             <SecondImgWrap>
-              {imgs.length > 0 && imgs.map((i, ind) => {
+              {resultImages.results.length > 0 && resultImages.results.map((i, ind) => {
 
                 if (ind > 0 & ind < 5) {
-                  return <SecondaryImg key={i.id}>
+                  return <SecondaryImg 
+                  onClick={() => {
+                    setCurrentSlide(ind)
+                    setShowSlider(true)}}
+                  key={i.id}>
                     <Image src={i.image} layout="fill" alt='screen'></Image>
                   </SecondaryImg>
                 }
@@ -321,27 +299,12 @@ function SingleGame({ result, params }) {
             </SecondImgWrap>
 
           </Media>
-          <Information>
-            <InformationBlock>
-              <span>Metascore</span>
-                <RatingBlock fz='20px' width='45px' height='35px'>{metacritic}</RatingBlock>
-            </InformationBlock>
-            <InformationBlock>
-            <span>Release date</span>
-            <span>{released}</span>
-            </InformationBlock>
-            <InformationBlock>
-              <span>Website</span>
-              <a href={website}>Go to website</a>
-            </InformationBlock>
-            <InformationBlock>
-              <span>Playtime</span>
-              <span>{playtime} hours</span>
-            </InformationBlock>
-          </Information>
+          <InformationComponent  data={result}/>
         </Content>
-
+        
       </FilterWrapper>
+      {showSlider && <Slider closeSlider={setShowSlider} number={currentSlide} img={resultImages.results} />}
+       
     </Wrapper>
   )
 }
@@ -354,10 +317,10 @@ export default SingleGame
 
 export async function getServerSideProps({ params }) {
   const response = await fetch(`https://api.rawg.io/api/games/${params.id}?key=ecde0efd01614fc68d0ef9efb4520852`)
-
+  const images = await fetch(`https://api.rawg.io/api/games/${params.id}/screenshots?key=ecde0efd01614fc68d0ef9efb4520852`)
   const result = await response.json()
-
+  const resultImages = await images.json()
   return {
-    props: { result, params }
+    props: { result, resultImages }
   }
 }

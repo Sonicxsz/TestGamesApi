@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import GameItem from '../components/gameItem/gameItem'
 import Layout from '../layout/layout'
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect } from 'react'
 import GameService from '../services/GameService'
 import { Context } from '../context'
 
@@ -15,7 +15,7 @@ export default function Home({results}) {
   const [page, setPage] = useState(2) // номер страницы 
   const [actualPlatform, setActialPlatform] = useState('')//платформа
   const [order, setOrder] = useState('&ordering=-metacritic&metacritic=1,100') // сортировка по рейтингу или дате выхода
-  
+    
   
   const [fetching, setFetching] = useState(false) //запрос 
 
@@ -78,10 +78,6 @@ const onFilterChangeRequest = ( order, platform ) =>{
       setFetching(true)
     }
   }
-  
-
- 
-
   
   return (
     <Context.Provider value={{

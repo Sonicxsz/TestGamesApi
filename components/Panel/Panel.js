@@ -165,21 +165,18 @@ const FilterIcons = [<Pc key={1}/>, <Ps key={2}/>, <Xb key={3}/>, <Nt key={4}/>,
 
 function Panel() {
     const [showSort, setShowSort] = useState(false); // показ сортировки
-    const [showFilter, setShowFilter] = useState(false); // показ фильтра на мобильном
-    const [activeSort, setActiveSort] = useState(2); // aктивная сортировка
-    const [activeFilter, setActiveFilter] = useState(4); // активный фильтр
-    ///////////////////////////////
     const sort = ['Release up', 'Release down', 'Rating up', 'Rainting down'] //отрисовка сортировки
     const sortValues = ['&ordering=-released', '&ordering=released', '&ordering=-metacritic&metacritic=1,100', '&ordering=metacritic&metacritic=1,100'] // значения сортировки для запроса
+    const [activeSort, setActiveSort] = useState(2); // aктивная сортировка
 
 
- 
-    
-
-    
+    const [showFilter, setShowFilter] = useState(false); // показ фильтра на мобильном
+    const [activeFilter, setActiveFilter] = useState(4); // активный фильтр
     const FilterValues = ['&platforms=4', '&platforms=18,187', '&platforms=1,14,186','&platforms=7' , '']
 
     const {setActialPlatform, setOrder} = useContext(Context)
+
+    
   return (
     <>
    

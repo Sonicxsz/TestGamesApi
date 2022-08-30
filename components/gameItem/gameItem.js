@@ -57,13 +57,21 @@ export const RatingBlock = styled.div`
     border:2px solid #6dc849;
     color: #6dc849;
     border-radius: 5px;
-    font-size: ${props => props.fz ? props.fz : '14px'};
+    font-size: ${props => props.fz ? props.fz : '15px'};
 `
 const GameName = styled.h2`
     display: inline-block;
     font-size: 24px;
     font-weight: 700;
     color: white;
+`
+
+const RatingWrapper = styled.div`
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
 `
 
 function GameItem({metacritic, background_image, name, released, platforms, id}) {
@@ -76,13 +84,13 @@ function GameItem({metacritic, background_image, name, released, platforms, id})
             </GameImgWrapper>
             <div style={{padding: '0 10px 0 10px'}}>
                 <div>
-                    <div className={styles.ratingWrapper}>
-                      
-                        <div>
+                    <RatingWrapper>
+                        <div>платформы</div>
+                        <div className={styles.flex}>
                             <span className={styles.greenInfo}>Rating:</span>
                             <RatingBlock>{metacritic ? metacritic : 0}</RatingBlock>
                         </div>
-                    </div>
+                    </RatingWrapper>
                 </div>
                     <span className={styles.releseInfo}>Release: {released}</span>
                 

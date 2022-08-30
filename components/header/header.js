@@ -1,8 +1,9 @@
 import Link from 'next/link'
-import React from 'react'
+import React,{useState, useEffect} from 'react'
 import styled from 'styled-components'
 import { device } from '../../utils/size'
-
+import debounce from 'lodash.debounce'
+import FindGameItem from './findGame';
 const HeaderWrapper = styled.div`
     display: grid;
     grid-template-columns: 1fr;
@@ -64,13 +65,50 @@ const SearchInput = styled.input`
 const SearchDrop = styled.div`
     position: absolute;
     top: 55px;
-    left: 0;
+    left: 0%;
     width: 100%;
-    background:red;
+    background:#151515e4;
+    border-radius: 20px;
     z-index: 999;
+    padding: 10px 20px;
+
+    @media (${device.laptop}) {
+        top: 55px;
+        left: 10%;
+        width: 80%;
+    }
+
 `
 
+
+
 function Header() {
+    const [searchLocal, setSearchLocal] = useState('')
+    const [serverSearch, setServerSearch] = useState('')
+    const [games, setGames] = useState([]) 
+
+    const usDeb = React.useCallback(
+        debounce((str) => {
+            setServerSearch(str);
+        }, 150),
+        []
+      );
+      const  onChangeInp = (e) => {
+        setSearchLocal(e.target.value);
+        usDeb(e.target.value);
+        
+      };
+
+    useEffect(() =>{
+         if(serverSearch.length > 1){
+            fetch(`https://api.rawg.io/api/games?key=ecde0efd01614fc68d0ef9efb4520852&dates=2007-01-01,2023-12-31&page_size=5&page=1&search=${serverSearch}`)
+            .then(res => res.json())
+            .then(res => setGames(res.results))
+         }else{
+            games.length > 0 && setGames([])
+         }
+    }, [serverSearch])  
+
   return (
 
     <HeaderWrapper>
@@ -79,8 +117,16 @@ function Header() {
                     RAWG
                 </Logo>
             </Link>
-            <SearchInput placeholder='search' type="text" />
-           <SearchDrop>ss</SearchDrop>
+            <SearchInput onChange={onChangeInp} value={searchLocal} placeholder='search' type="text" />
+           {searchLocal.length > 1 && <SearchDrop>
+             {games.map(i =>{
+                return <FindGameItem
+                    setGames={setGames}
+                    setSearchLocal={setSearchLocal}
+                    setServerSearch={setServerSearch}
+                    link={`${i.id}`} key={i.id} img={i.background_image} text={i.name}/>
+             })}
+           </SearchDrop>}
     </HeaderWrapper>
     
   )
