@@ -3,16 +3,16 @@ import React from 'react'
 import styled from 'styled-components'
 
 function Page404() {
-  return (
-    <NotFound>
-        <Message>
-            Страница не найдена
-        </Message>
-        <Link href={'/'} as={'/'}>
-        <Button>Вернуться на главную</Button>
-        </Link>
-    </NotFound>
-  )
+    return (
+        <NotFound>
+            <Message>
+                Страница не найдена
+            </Message>
+            <Link href={'/'} as={'/'}>
+                <Button>Вернуться на главную</Button>
+            </Link>
+        </NotFound>
+    )
 }
 
 

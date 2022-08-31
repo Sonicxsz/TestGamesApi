@@ -119,7 +119,7 @@ const SecondaryImg = styled(MainImg)`
       height: 200px;
       margin: 10px auto;
     } 
-
+    
     @media(${device.laptop}){
       display: block;
       height: 100px;
