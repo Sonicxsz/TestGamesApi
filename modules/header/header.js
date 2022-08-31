@@ -84,8 +84,10 @@ const HeaderWrapper = styled.div`
     }
 `
 const Logo = styled.div`
-        display: none;
+        display: block;
+        margin: 0 auto;
         cursor: pointer;
+        font-size: 20px;
     @media (${device.mobileL}) {
         display: flex;
         justify-content: center;
@@ -120,13 +122,17 @@ const SearchInput = styled.input`
 `
 const SearchDrop = styled.div`
     position: absolute;
-    top: 55px;
+    top: 90px;
     left: 0%;
     width: 100%;
     background:#151515e4;
     border-radius: 20px;
     z-index: 999;
     padding: 10px 20px;
+
+    @media (${device.mobileL}) {
+        top: 55px;
+    }
 
     @media (${device.laptop}) {
         top: 55px;

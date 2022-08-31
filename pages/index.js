@@ -4,7 +4,7 @@ import Layout from '../common/layout/layout'
 import { useState, useEffect } from 'react'
 import GameService from '../services/GameService'
 import { Context } from '../common/context'
-
+import Error from 'next/error'
 
 export default function Home(props) {
   const {results} = props;
@@ -16,7 +16,7 @@ export default function Home(props) {
   const [actualPlatform, setActialPlatform] = useState('')//платформа
   const [order, setOrder] = useState('&ordering=-metacritic&metacritic=1,100') // сортировка по рейтингу или дате выхода
   const [fetching, setFetching] = useState(false) //запрос 
-
+ 
 
 
   const {getAllGames} = GameService() //сервис для запроса
@@ -29,6 +29,7 @@ const onRequest = (page, order, platform) =>{
           setPage(page => page + 1)
           setFetching(false)
         })
+        .catch(err => console.log(err))
 }
 
 
@@ -87,6 +88,8 @@ const onFilterChangeRequest = ( order, platform ) =>{
         <meta charset='utf-8'/>
       </Head>
     <Layout>
+     
+      
         {games.length > 0 && games.map(i => {
           return <GameItem key={i.id}
           platforms={i.platforms} 
