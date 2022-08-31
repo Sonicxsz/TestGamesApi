@@ -16,23 +16,43 @@ function GameItem(props) {
             <GameImgWrapper>
                 {background_image  && <Image src={background_image} layout='fill' alt="game" />}
             </GameImgWrapper>
-            <div style={{padding: '0 10px 0 10px'}}>
+            <GameInfoWrapper>
                 
                     <RatingWrapper>
-                        <div className={styles.flex}>
-                            <span className={styles.greenInfo}>Rating:</span>
+                        <GreenWrapper>
+                            <GreenInfo>Rating:</GreenInfo>
                             <RatingBlock>{metacritic ? metacritic : 0}</RatingBlock>
-                        </div>
+                        </GreenWrapper>
                     </RatingWrapper>
                 
-                    <span className={styles.releseInfo}>Release: {released}</span>
+                    <ReleseInfo>Release: {released}</ReleseInfo>
                 
                 <Link href={'/game/[id]'} as={`/game/${id}`}><GameName>{name}</GameName></Link>
-            </div>
+            </GameInfoWrapper>
     </GameWrapper>
     </>
   )
 }
+
+const GameInfoWrapper = styled.div`
+    padding: 0 10px;
+`
+
+const GreenWrapper = styled.div`
+    display:flex;
+`
+
+const GreenInfo = styled.span`
+    color: #6dc849;
+    margin-right: 5px;
+`
+
+const ReleseInfo = styled.div`
+    display: block;
+    color: #ffffff;
+    margin-right: 8px;
+
+`
 
 const GameWrapper = styled.div`
     display: inline-block;
@@ -92,6 +112,10 @@ const GameName = styled.h2`
     font-size: 24px;
     font-weight: 700;
     color: white;
+    transition: color 0.2s linear;
+    :hover{
+        color: #626161;
+    }
 `
 
 const RatingWrapper = styled.div`
