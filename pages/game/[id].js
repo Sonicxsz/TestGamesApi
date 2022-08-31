@@ -22,7 +22,7 @@ function SingleGame(props) {
        <Head>
         <title>Single Page</title>
         <meta name="keywords" content='games,nintendo, pc, ps, xbox' />
-        <meta charset='utf-8'/>
+        <meta charSet='utf-8'/>
       </Head>
       <FilterWrapper>
         <Header />

@@ -85,7 +85,7 @@ const onFilterChangeRequest = ( order, platform ) =>{
       <Head>
         <title>All Games Page</title>
         <meta name="keywords" content='games, pc, ps, xbox' />
-        <meta charset='utf-8'/>
+        <meta charSet='utf-8'/>
       </Head>
     <Layout>
      

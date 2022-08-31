@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import Image from 'next/image'
-import styles from './styles.module.css'
+
 import { device } from '../../common/utils/size'
 import Link from 'next/link'
 
@@ -19,10 +19,8 @@ function GameItem(props) {
             <GameInfoWrapper>
                 
                     <RatingWrapper>
-                        <GreenWrapper>
                             <GreenInfo>Rating:</GreenInfo>
                             <RatingBlock>{metacritic ? metacritic : 0}</RatingBlock>
-                        </GreenWrapper>
                     </RatingWrapper>
                 
                     <ReleseInfo>Release: {released}</ReleseInfo>
@@ -36,10 +34,6 @@ function GameItem(props) {
 
 const GameInfoWrapper = styled.div`
     padding: 0 10px;
-`
-
-const GreenWrapper = styled.div`
-    display:flex;
 `
 
 const GreenInfo = styled.span`
