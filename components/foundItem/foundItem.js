@@ -38,7 +38,7 @@ function FoundGameItem(props) {
         setServerSearch('')
     }}>
        <FindImageWrapper>
-        <Image src={img} layout="fill" alt='img'></Image>
+        {img && <Image src={img} layout="fill" alt='img'></Image>}
        </FindImageWrapper>
         <Name>{text}</Name>
     </FindGame>

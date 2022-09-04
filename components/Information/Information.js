@@ -25,7 +25,7 @@ function Information(props) {
       </InformationBlock>
       <InformationBlock>
         <span>Delevelopers:</span>
-        <span>{developers[0].name}</span>
+        <span>{developers.length > 0 ?developers[0].name : "no Data"}</span>
       </InformationBlock>
       <InformationBlock>
         <span>Publisher:</span>
