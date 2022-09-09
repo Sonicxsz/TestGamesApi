@@ -1,9 +1,7 @@
-import React from 'react'
-import styled from 'styled-components'
-import Image from 'next/image'
-
-import { device } from '../../common/utils/size'
-import Link from 'next/link'
+import styled from 'styled-components';
+import Image from 'next/image';
+import { device } from '../../common/utils/size';
+import Link from 'next/link';
 
 
 

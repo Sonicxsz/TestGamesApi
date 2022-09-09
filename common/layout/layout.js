@@ -5,7 +5,6 @@ import Panel from '../../modules/Panel/Panel'
 import Header from '../../modules/header/header'
 
 function Layout({children}) { 
-   
   return (
   <Wrapper>
         <Header />

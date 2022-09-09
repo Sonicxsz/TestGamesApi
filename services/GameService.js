@@ -11,17 +11,18 @@ const GameService = () => {
 
         let res = await request(`${_api}${_apiKey}&dates=2007-01-01,2023-12-31&page_size=16&page=${page}${order}${platform}`)
         return _transformGames(res)
+
     }
 
 
     function _transformGames (res){
+
         let {results} = res;
         return results
+        
     }
 
-
-
-    return {getAllGames}
+return {getAllGames}
 }
 
 

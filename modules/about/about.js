@@ -1,14 +1,12 @@
-
-import styled from 'styled-components'
-import { H1 } from '../../common/layout/layout'
-import { device } from '../../common/utils/size'
-import { Pc, Ps, Xb, Nt } from '../../public/icons'
+import styled from 'styled-components';
+import { H1 } from '../../common/layout/layout';
+import { device } from '../../common/utils/size';
+import { Pc, Ps, Xb, Nt } from '../../public/icons';
 
 
 function AboutComponent(props) {
   const {result, fullText, setFullText} = props;
   const { name, description_raw, platforms } = result;
-
   const FilterIcons = [<Pc key={1} />, <Ps key={2} />, <Xb key={3} />, <Nt key={4} />];
   
   let platform = platforms.map(i => i.platform.id).map((i) => {
@@ -16,9 +14,9 @@ function AboutComponent(props) {
     if (i === 18 || i === 16 || i === 187) return FilterIcons[1]
     if (i === 1 || i === 14 || i == 186) return FilterIcons[2]
     if (i === 7) return FilterIcons[3]
-  })
+  });
 
-  platform = [...new Set(platform)]
+  platform = [...new Set(platform)];
 
   return (
     <>
@@ -34,8 +32,6 @@ function AboutComponent(props) {
           <Title fullText={fullText}>{description_raw}</Title>
           {description_raw.length < 300 ? null : <ButtonMore onClick={() => setFullText(!fullText)}>{fullText ? 'Hide text' : 'Read more'}</ButtonMore>}
         </Text>
-
-
       </About>
     </>
   )

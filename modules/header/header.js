@@ -9,9 +9,9 @@ import FoundGameItem from '../../components/foundItem/foundItem';
 
 
 function Header() {
-    const [searchLocal, setSearchLocal] = useState('')
-    const [serverSearch, setServerSearch] = useState('')
-    const [games, setGames] = useState([])
+    const [searchLocal, setSearchLocal] = useState('');
+    const [serverSearch, setServerSearch] = useState('');
+    const [games, setGames] = useState([]);
 
     const usDeb = React.useCallback(
         debounce((str) => {
@@ -22,7 +22,6 @@ function Header() {
     const onChangeInp = (e) => {
         setSearchLocal(e.target.value);
         usDeb(e.target.value);
-
     };
 
     useEffect(() => {
@@ -33,7 +32,7 @@ function Header() {
         } else {
             games.length > 0 && setGames([])
         }
-    }, [serverSearch])
+    }, [serverSearch]);
 
     return (
 

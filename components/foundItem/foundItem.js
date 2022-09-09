@@ -1,6 +1,30 @@
-import styled from 'styled-components'
-import Image from 'next/image'
-import Link from 'next/link'
+import styled from 'styled-components';
+import Image from 'next/image';
+import Link from 'next/link';
+
+
+function FoundGameItem(props) {
+   const {setSearchLocal, setServerSearch, setGames, link, img, text} = props;
+   
+  return (
+    <Link href={'/game/[id]'} as={`/game/${link}`}>
+        
+    <FindGame onClick={() =>{
+        setSearchLocal('')
+        setGames([])
+        setServerSearch('')
+    }}>
+       <FindImageWrapper>
+        {img && <Image src={img} layout="fill" alt='img'></Image>}
+       </FindImageWrapper>
+        <Name>{text}</Name>
+    </FindGame>
+    </Link>
+    
+  )
+}
+
+
 const FindGame = styled.div`
     display:flex;
     justify-content: start;
@@ -24,27 +48,5 @@ const Name = styled.span`
     color: white;
     margin-left: 10px;
 `
-
-
-function FoundGameItem(props) {
-   const {setSearchLocal, setServerSearch, setGames, link, img, text} = props;
-   
-  return (
-    <Link href={'/game/[id]'} as={`/game/${link}`}>
-        
-    <FindGame onClick={() =>{
-        setSearchLocal('')
-        setGames([])
-        setServerSearch('')
-    }}>
-       <FindImageWrapper>
-        {img && <Image src={img} layout="fill" alt='img'></Image>}
-       </FindImageWrapper>
-        <Name>{text}</Name>
-    </FindGame>
-    </Link>
-    
-  )
-}
 
 export default FoundGameItem

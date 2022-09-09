@@ -1,5 +1,5 @@
-import { RatingBlock } from '../gameItem/gameItem'
-import styled from 'styled-components'
+import { RatingBlock } from '../gameItem/gameItem';
+import styled from 'styled-components';
 
 
 function Information(props) {

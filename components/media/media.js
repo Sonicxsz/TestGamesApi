@@ -2,9 +2,6 @@ import { device } from "../../common/utils/size"
 import Image from "next/image"
 import styled from "styled-components"
 
-
-
-
 function MediaComponent(props) {
   const {results, setCurrentSlide, setShowSlider} = props;
   
@@ -31,7 +28,6 @@ function MediaComponent(props) {
 
               })}
             </SecondImgWrap>
-
           </Media>
     </>
   )

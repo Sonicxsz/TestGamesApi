@@ -8,26 +8,26 @@ import { device } from '../../common/utils/size'
 
 function Slider(props) {
     const { img, number, closeSlider } = props;
-    const [pages, setPages] = useState([])
+    const [pages, setPages] = useState([]);
 
-    const [current, setCurrent] = useState(number)
-    useKey('ArrowLeft', handlerClickPrev)
-    useKey('ArrowRight', handlerClickNext)
-    useKey('Escape', handleClose)
+    const [current, setCurrent] = useState(number);
+    useKey('ArrowLeft', handlerClickPrev);
+    useKey('ArrowRight', handlerClickNext);
+    useKey('Escape', handleClose);
     useEffect(() => {
         setPages(img)
-    }, [])
+    }, []);
 
 
-    function handleClose() {
+    const handleClose = () => {
         closeSlider(false)
     }
 
-    function handlerClickPrev() {
+    const handlerClickPrev = () => {
         setCurrent(current => current - 1 === -1 ? pages.length - 1 : current - 1)
     }
 
-    function handlerClickNext() {
+    const handlerClickNext = () => {
         setCurrent(current => current + 1 > pages.length - 1 ? 0 : current + 1)
     }
 
