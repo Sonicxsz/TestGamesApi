@@ -3,37 +3,41 @@ import { H1 } from '../../common/layout/layout';
 import { device } from '../../common/utils/size';
 import { Pc, Ps, Xb, Nt } from '../../public/icons';
 
+const FilterIcons = [{name: 'PC', comp:<Pc key={1} />}, 
+          {name: 'PlayStation 4', comp:<Ps key={2} />}, 
+          {name: 'Xbox One', comp:<Xb key={3} />}, 
+          {name:'Nintendo Switch', comp:<Nt key={4} />}];
 
-function AboutComponent(props) {
-    const {result, fullText, setFullText} = props;
-    const { name, description_raw, platforms } = result;
-    const FilterIcons = [{name: 'PC', comp:<Pc key={1} />}, {name: 'PlayStation 4', comp:<Ps key={2} />}, {name: 'Xbox One',comp:<Xb key={3} />}, {name:'Nintendo Switch',comp:<Nt key={4} />}];
-  
-    let platform = platforms.map(i => i.platform.name)
 
-    
+function AboutComponent({result, fullText, setFullText}) {
+  const { name, description_raw, platforms } = result
+  const platform = [...new Set(platforms.map(i => i.platform.name))]
 
-    platform = [...new Set(platform)];
+  const handleChangeText = () => {
+    return () => setFullText(!fullText)
+  }
 
-    return (
-        <>
-            <About>
-                <H2>{name}</H2>
-                <Platforms>
-                    {FilterIcons.map(i => {
-                      return platform.includes(i.name) && i.comp
-                    })}
-                </Platforms>
-                <Text>
-                    <H3>About</H3>
-                    <Title fullText={fullText}>{description_raw}</Title>
-                    {description_raw.length < 300 
-                        ? null 
-                        : <ButtonMore onClick={() => setFullText(!fullText)}>{fullText ? 'Hide text' : 'Read more'}</ButtonMore>}
-                </Text>
-            </About>
-        </>
-    )
+  const showBtn = description_raw.length > 300
+
+  return (
+          <About>
+              <H2>{name}</H2>
+              <Platforms>
+                  {FilterIcons.map(i => {
+                    return platform.includes(i.name) && i.comp
+                  })}
+              </Platforms>
+              <Text>
+                  <H3>About</H3>
+                  <Title fullText={fullText}>{description_raw}</Title>
+                  {showBtn && 
+                      <ButtonMore onClick={handleChangeText()}>
+                            {fullText ? 'Hide text' : 'Read more'}
+                      </ButtonMore>
+                  }
+              </Text>
+          </About>
+  )
 }
 
 
