@@ -6,28 +6,28 @@ import Link from 'next/link';
 
 
 function GameItem(props) {
-   const {metacritic, background_image, name, released, id} = props;
+    const {metacritic, background_image, name, released, id} = props;
    
-  return (
-    <>
-        <GameWrapper>
-            <GameImgWrapper>
-                {background_image  && <Image src={background_image} layout='fill' alt="game" />}
-            </GameImgWrapper>
-            <GameInfoWrapper>
+    return (
+        <>
+            <GameWrapper>
+                <GameImgWrapper>
+                    {background_image  && <Image src={background_image} layout='fill' alt="game" />}
+                </GameImgWrapper>
+                <GameInfoWrapper>
                 
                     <RatingWrapper>
-                            <GreenInfo>Rating:</GreenInfo>
-                            <RatingBlock>{metacritic ? metacritic : 0}</RatingBlock>
+                        <GreenInfo>Rating:</GreenInfo>
+                        <RatingBlock>{metacritic ? metacritic : 0}</RatingBlock>
                     </RatingWrapper>
                 
                     <ReleseInfo>Release: {released}</ReleseInfo>
                 
-                <Link href={'/game/[id]'} as={`/game/${id}`}><GameName>{name}</GameName></Link>
-            </GameInfoWrapper>
-    </GameWrapper>
-    </>
-  )
+                    <Link href={'/game/[id]'} as={`/game/${id}`}><GameName>{name}</GameName></Link>
+                </GameInfoWrapper>
+            </GameWrapper>
+        </>
+    )
 }
 
 const GameInfoWrapper = styled.div`

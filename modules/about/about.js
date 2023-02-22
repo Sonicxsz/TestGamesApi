@@ -5,36 +5,36 @@ import { Pc, Ps, Xb, Nt } from '../../public/icons';
 
 
 function AboutComponent(props) {
-  const {result, fullText, setFullText} = props;
-  const { name, description_raw, platforms } = result;
-  const FilterIcons = [<Pc key={1} />, <Ps key={2} />, <Xb key={3} />, <Nt key={4} />];
+    const {result, fullText, setFullText} = props;
+    const { name, description_raw, platforms } = result;
+    const FilterIcons = [<Pc key={1} />, <Ps key={2} />, <Xb key={3} />, <Nt key={4} />];
   
-  let platform = platforms.map(i => i.platform.id).map((i) => {
-    if (i === 4) return FilterIcons[0]
-    if (i === 18 || i === 16 || i === 187) return FilterIcons[1]
-    if (i === 1 || i === 14 || i == 186) return FilterIcons[2]
-    if (i === 7) return FilterIcons[3]
-  });
+    let platform = platforms.map(i => i.platform.id).map((i) => {
+        if (i === 4) return FilterIcons[0]
+        if (i === 18 || i === 16 || i === 187) return FilterIcons[1]
+        if (i === 1 || i === 14 || i == 186) return FilterIcons[2]
+        if (i === 7) return FilterIcons[3]
+    });
 
-  platform = [...new Set(platform)];
+    platform = [...new Set(platform)];
 
-  return (
-    <>
-      <About>
-        <H2>{name}</H2>
-        <Platforms>
-          {platform.map(i => {
-            return i
-          })}
-        </Platforms>
-        <Text>
-          <H3>About</H3>
-          <Title fullText={fullText}>{description_raw}</Title>
-          {description_raw.length < 300 ? null : <ButtonMore onClick={() => setFullText(!fullText)}>{fullText ? 'Hide text' : 'Read more'}</ButtonMore>}
-        </Text>
-      </About>
-    </>
-  )
+    return (
+        <>
+            <About>
+                <H2>{name}</H2>
+                <Platforms>
+                    {platform.map(i => i)}
+                </Platforms>
+                <Text>
+                    <H3>About</H3>
+                    <Title fullText={fullText}>{description_raw}</Title>
+                    {description_raw.length < 300 
+                        ? null 
+                        : <ButtonMore onClick={() => setFullText(!fullText)}>{fullText ? 'Hide text' : 'Read more'}</ButtonMore>}
+                </Text>
+            </About>
+        </>
+    )
 }
 
 

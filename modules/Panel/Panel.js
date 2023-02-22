@@ -7,19 +7,23 @@ import { Context } from '../../common/context';
 
 
 
-const FilterIcons = [<Pc key={1} />, <Ps key={2} />, <Xb key={3} />, <Nt key={4} />, "ALL"];
+const FilterIcons = [<Pc key={1} />, <Ps key={2} />, <Xb key={3} />, <Nt key={4} />, 'ALL'];
 
 function Panel() {
-    const [showSort, setShowSort] = useState(false); // показ сортировки
-    const sort = ['Release up', 'Release down', 'Rating up', 'Rainting down']; //отрисовка сортировки
-    const sortValues = ['&ordering=-released', '&ordering=released', '&ordering=-metacritic&metacritic=1,100', '&ordering=metacritic&metacritic=1,100']; // значения сортировки для запроса
-    const [activeSort, setActiveSort] = useState(2); // aктивная сортировка
+    const [showSort, setShowSort] = useState(false); // Показ сортировки
+    const sort = ['Release up', 'Release down', 'Rating up', 'Rainting down']; // Отрисовка сортировки
+
+    const sortValues = ['&ordering=-released', 
+        '&ordering=released', 
+        '&ordering=-metacritic&metacritic=1,100', 
+        '&ordering=metacritic&metacritic=1,100']; // Значения сортировки для запроса
+    const [activeSort, setActiveSort] = useState(2); // Aктивная сортировка
 
 
-    const [showFilter, setShowFilter] = useState(false); // показ фильтра на мобильном
-    const [activeFilter, setActiveFilter] = useState(4); // активный фильтр
+    const [showFilter, setShowFilter] = useState(false); // Показ фильтра на мобильном
+    const [activeFilter, setActiveFilter] = useState(4); // Активный фильтр
+
     const FilterValues = ['&platforms=4', '&platforms=18,187', '&platforms=1,14,186', '&platforms=7', ''];
-
     const { setActialPlatform, setOrder } = useContext(Context);
 
 
@@ -28,13 +32,13 @@ function Panel() {
             <SettingPanel>
                 <> <DropDownButton onClick={() => setShowSort(!showSort)}>Order: {sort[activeSort]}</DropDownButton>
                     {showSort && <DropDowm>
-                        {sort.map((i, ind) => {
-                            return ind === activeSort ? <li current="rgb(94, 171, 247)">{i}</li> : <li onClick={() => {
+                        {sort.map((i, ind) => ind === activeSort 
+                            ? <li current="rgb(94, 171, 247)">{i}</li> 
+                            : <li onClick={() => {
                                 setShowSort(!showSort)
                                 setActiveSort(ind)
                                 setOrder(sortValues[ind])
-                            }} key={ind}>{i}</li>
-                        })}
+                            }} key={ind}>{i}</li>)}
                     </DropDowm>}</>
 
                 <Filter>
@@ -45,27 +49,26 @@ function Panel() {
                     </BurgerButton>
 
                     <DesctopMenu>
-                        {FilterIcons.map((i, ind) => {
-                            return ind === activeFilter ? <FilterButtonActive key={ind}>{i}</FilterButtonActive> : <FilterButton key={ind}
+                        {FilterIcons.map((i, ind) => ind === activeFilter 
+                            ? <FilterButtonActive key={ind}>{i}</FilterButtonActive> 
+                            : <FilterButton key={ind}
                                 onClick={() => {
                                     setActiveFilter(ind)
                                     setActialPlatform(FilterValues[ind])
                                 }}
-                            >{i}</FilterButton>
-                        })}
+                            >{i}</FilterButton>)}
 
                     </DesctopMenu>
                     {showFilter && (<HamburgerMenu>
-                        {FilterIcons.map((i, ind) => {
-                            return ind === activeFilter ? <FilterButtonActive key={ind}>{i}</FilterButtonActive> :
-                                <FilterButton key={ind}
-                                    onClick={() => {
-                                        setActialPlatform(FilterValues[ind])
-                                        setActiveFilter(ind)
-                                        setShowFilter(!showFilter)
-                                    }}
-                                >{i}</FilterButton>
-                        })}
+                        {FilterIcons.map((i, ind) => ind === activeFilter 
+                            ? <FilterButtonActive key={ind}>{i}</FilterButtonActive> 
+                            :<FilterButton key={ind}
+                                onClick={() => {
+                                    setActialPlatform(FilterValues[ind])
+                                    setActiveFilter(ind)
+                                    setShowFilter(!showFilter)
+                                }}
+                            >{i}</FilterButton>)}
                     </HamburgerMenu>)}
                 </Filter>
 

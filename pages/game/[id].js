@@ -10,45 +10,49 @@ import AboutComponent from '../../modules/about/about'
 
 
 function SingleGame(props) {
-  const {result, resultImages} = props;
-  const { background_image } = result;
-  const [showSlider, setShowSlider] = useState(false)
-  const [currentSlide, setCurrentSlide] = useState(0)
-  const [fullText, setFullText] = useState(false)
+    const {result, resultImages} = props;
+    const { background_image } = result;
+    const [showSlider, setShowSlider] = useState(false)
+    const [currentSlide, setCurrentSlide] = useState(0)
+    const [fullText, setFullText] = useState(false)
 
-  return (
+    return (
 
-    <Wrapper img={background_image}>
-       <Head>
-        <title>Single Page</title>
-        <meta name="keywords" content='games,nintendo, pc, ps, xbox' />
-        <meta charSet='utf-8'/>
-      </Head>
-      <FilterWrapper>
-        <Header />
-        <Content>
-          <AboutComponent result={result} fullText={fullText}  setFullText={setFullText}/>
-          <MediaComponent setShowSlider={setShowSlider} setCurrentSlide={setCurrentSlide} results={resultImages.results} />
-          <InformationComponent  data={result}/>
-        </Content>
+        <Wrapper img={background_image}>
+            <Head>
+                <title>Single Page</title>
+                <meta name="keywords" content='games,nintendo, pc, ps, xbox' />
+                <meta charSet='utf-8'/>
+            </Head>
+            <FilterWrapper>
+                <Header />
+                <Content>
+                    <AboutComponent result={result} fullText={fullText}  setFullText={setFullText}/>
+                    <MediaComponent 
+                        setShowSlider={setShowSlider}
+                        setCurrentSlide={setCurrentSlide}
+                        results={resultImages.results} />
+                    <InformationComponent  data={result}/>
+                </Content>
         
-      </FilterWrapper>
-      {showSlider && <Slider closeSlider={setShowSlider} number={currentSlide} img={resultImages.results} />}
+            </FilterWrapper>
+            {showSlider && <Slider closeSlider={setShowSlider} number={currentSlide} img={resultImages.results} />}
        
-    </Wrapper>
-  )
+        </Wrapper>
+    )
 }
 
 
 
 export async function getServerSideProps({ params }) {
-  const response = await fetch(`https://api.rawg.io/api/games/${params.id}?key=ecde0efd01614fc68d0ef9efb4520852`)
-  const images = await fetch(`https://api.rawg.io/api/games/${params.id}/screenshots?key=ecde0efd01614fc68d0ef9efb4520852`)
-  const result = await response.json()
-  const resultImages = await images.json()
-  return {
-    props: { result, resultImages }
-  }
+    const baseUrl = 'https://api.rawg.io/api/games/'
+    const response = await fetch(`${baseUrl}${params.id}?key=ecde0efd01614fc68d0ef9efb4520852`)
+    const images = await fetch(`${baseUrl}${params.id}/screenshots?key=ecde0efd01614fc68d0ef9efb4520852`)
+    const result = await response.json()
+    const resultImages = await images.json()
+    return {
+        props: { result, resultImages }
+    }
 }
 
 export default SingleGame

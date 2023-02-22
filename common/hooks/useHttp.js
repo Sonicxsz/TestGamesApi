@@ -7,26 +7,27 @@ function useHttp() {
 
     const request = useCallback(async (url, method = 'GET', body = null, 
 
-    headers = {'Content-Type': 'application/json'}) => {
+        headers = {'Content-Type': 'application/json'}) => {
         setError(false)
         setLoading(true);
         setPropess('loading')
         try {
-          const response = await fetch(url, {method, body, headers})
+            const response = await fetch(url, {method, body, headers})
           
-          if(!response.ok){
-            throw new Error(`Could not fethc ${url}`);
-          }
-          const data = await response.json()
+            if(!response.ok){
+                throw new Error(`Could not fethc ${url}`);
+            }
 
-          setLoading(false)
-          return data
+            const data = await response.json()
+
+            setLoading(false)
+            return data
         }
-         catch (e) {
-           setPropess('error')
-           setLoading(false)
-           setError(true)
-           throw e
+        catch (e) {
+            setPropess('error')
+            setLoading(false)
+            setError(true)
+            throw e
         }
         
     }, []);

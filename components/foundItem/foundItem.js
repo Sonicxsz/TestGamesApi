@@ -4,24 +4,24 @@ import Link from 'next/link';
 
 
 function FoundGameItem(props) {
-   const {setSearchLocal, setServerSearch, setGames, link, img, text} = props;
+    const {setSearchLocal, setServerSearch, setGames, link, img, text} = props;
    
-  return (
-    <Link href={'/game/[id]'} as={`/game/${link}`}>
+    return (
+        <Link href={'/game/[id]'} as={`/game/${link}`}>
         
-    <FindGame onClick={() =>{
-        setSearchLocal('')
-        setGames([])
-        setServerSearch('')
-    }}>
-       <FindImageWrapper>
-        {img && <Image src={img} layout="fill" alt='img'></Image>}
-       </FindImageWrapper>
-        <Name>{text}</Name>
-    </FindGame>
-    </Link>
+            <FindGame onClick={() =>{
+                setSearchLocal('')
+                setGames([])
+                setServerSearch('')
+            }}>
+                <FindImageWrapper>
+                    {img && <Image src={img} layout="fill" alt='img'></Image>}
+                </FindImageWrapper>
+                <Name>{text}</Name>
+            </FindGame>
+        </Link>
     
-  )
+    )
 }
 
 

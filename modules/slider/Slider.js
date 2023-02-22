@@ -52,16 +52,16 @@ function Slider(props) {
             <WindowWrap>
                 <Side onClick={handlerClickPrev} />
                 <Window>
-                    {pages.length > 0 && <Image src={pages[current].image} objectFit='scale-down' layout="fill" alt='img' />}
+                    {pages.length > 0 
+                    && <Image src={pages[current].image} objectFit='scale-down' layout="fill" alt='img' />}
                 </Window>
                 <Side onClick={handlerClickNext} />
             </WindowWrap>
             <Pagination>
-                {pages.length > 0 && pages.map((i, ind) => {
-
-                    return ind === current ? <CircleActive key={ind} width='20px' height='20px' border='1px solid #fff' /> :
-                        <Circle key={ind} onClick={() => setCurrent(ind)} width='20px' height='20px' border='1px solid #fff' />
-                })}
+                {pages.length > 0 && pages.map((i, ind) => ind === current 
+                    ? <CircleActive key={ind} width='20px' height='20px' border='1px solid #fff' /> 
+                    : <Circle key={ind} 
+                        onClick={() => setCurrent(ind)} width='20px' height='20px' border='1px solid #fff' />)}
             </Pagination>
 
         </ModalWrapper>

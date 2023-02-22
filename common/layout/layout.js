@@ -1,4 +1,4 @@
-import React from 'react'
+
 import styled from 'styled-components'
 import { device } from '../utils/size'
 import Panel from '../../modules/Panel/Panel'

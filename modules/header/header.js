@@ -26,7 +26,9 @@ function Header() {
 
     useEffect(() => {
         if (serverSearch.length > 1) {
-            fetch(`https://api.rawg.io/api/games?key=ecde0efd01614fc68d0ef9efb4520852&dates=2007-01-01,2023-12-31&page_size=5&page=1&search=${serverSearch}`)
+            const baseUrl = 'https://api.rawg.io/api/games?'
+            fetch(`${baseUrl}key=ecde0efd01614fc68d0ef9efb4520852&dates=2007-01-01,2023-12-31&page_size=5&page=1&search=
+                    ${serverSearch}`)
                 .then(res => res.json())
                 .then(res => setGames(res.results))
         } else {
@@ -44,13 +46,11 @@ function Header() {
             </Link>
             <SearchInput onChange={onChangeInp} value={searchLocal} placeholder='search' type="text" />
             {searchLocal.length > 1 && <SearchDrop>
-                {games.map(i => {
-                    return <FoundGameItem
-                        setGames={setGames}
-                        setSearchLocal={setSearchLocal}
-                        setServerSearch={setServerSearch}
-                        link={`${i.id}`} key={i.id} img={i.background_image} text={i.name} />
-                })}
+                {games.map(i => <FoundGameItem
+                    setGames={setGames}
+                    setSearchLocal={setSearchLocal}
+                    setServerSearch={setServerSearch}
+                    link={`${i.id}`} key={i.id} img={i.background_image} text={i.name} />)}
             </SearchDrop>}
         </HeaderWrapper>
 

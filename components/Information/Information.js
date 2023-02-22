@@ -3,38 +3,36 @@ import styled from 'styled-components';
 
 
 function Information(props) {
-  const { metacritic, released, website, playtime, developers, publishers } = props.data;
+    const { metacritic, released, website, playtime, developers, publishers } = props.data;
 
-  return (
-    <InformationWrapper>
-      <InformationBlock>
-        <span>Metascore</span>
-        <RatingBlock fz='20px' width='45px' height='35px'>{metacritic ? metacritic : 0}</RatingBlock>
-      </InformationBlock>
-      <InformationBlock>
-        <span>Release date</span>
-        <span>{released}</span>
-      </InformationBlock>
-      <InformationBlock>
-        <span>Website: </span>
-        <a href={website}>Go to website</a>
-      </InformationBlock>
-      <InformationBlock>
-        <span>Playtime:</span>
-        <span>{playtime} hours</span>
-      </InformationBlock>
-      <InformationBlock>
-        <span>Delevelopers:</span>
-        <span>{developers.length > 0 ?developers[0].name : "no Data"}</span>
-      </InformationBlock>
-      <InformationBlock>
-        <span>Publisher:</span>
-        {publishers.map((i) => {
-          return <span style={{ display: 'inline' }} key={i.id}>{`${i.name} `}</span>
-        })}
-      </InformationBlock>
-    </InformationWrapper>
-  )
+    return (
+        <InformationWrapper>
+            <InformationBlock>
+                <span>Metascore</span>
+                <RatingBlock fz='20px' width='45px' height='35px'>{metacritic ? metacritic : 0}</RatingBlock>
+            </InformationBlock>
+            <InformationBlock>
+                <span>Release date</span>
+                <span>{released}</span>
+            </InformationBlock>
+            <InformationBlock>
+                <span>Website: </span>
+                <a href={website}>Go to website</a>
+            </InformationBlock>
+            <InformationBlock>
+                <span>Playtime:</span>
+                <span>{playtime} hours</span>
+            </InformationBlock>
+            <InformationBlock>
+                <span>Delevelopers:</span>
+                <span>{developers.length > 0 ?developers[0].name : 'no Data'}</span>
+            </InformationBlock>
+            <InformationBlock>
+                <span>Publisher:</span>
+                {publishers.map((i) => <span style={{ display: 'inline' }} key={i.id}>{`${i.name} `}</span>)}
+            </InformationBlock>
+        </InformationWrapper>
+    )
 }
 
 export default Information;

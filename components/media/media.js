@@ -1,36 +1,36 @@
-import { device } from "../../common/utils/size"
-import Image from "next/image"
-import styled from "styled-components"
+import { device } from '../../common/utils/size'
+import Image from 'next/image'
+import styled from 'styled-components'
 
 function MediaComponent(props) {
-  const {results, setCurrentSlide, setShowSlider} = props;
+    const {results, setCurrentSlide, setShowSlider} = props;
   
-  return (
-    <>
-        <Media>
-            <MainImg
-              onClick={() => {setShowSlider(true)}}
-            >
-              {results.length > 0 && <Image src={results[0].image} alt='photo' objectFit='fill' layout='fill' />}
-            </MainImg>
-            <SecondImgWrap>
-              {results.length > 0 && results.map((i, ind) => {
+    return (
+        <>
+            <Media>
+                <MainImg
+                    onClick={() => {setShowSlider(true)}}
+                >
+                    {results.length > 0 && <Image src={results[0].image} alt='photo' objectFit='fill' layout='fill' />}
+                </MainImg>
+                <SecondImgWrap>
+                    {results.length > 0 && results.map((i, ind) => {
 
-                if (ind > 0 & ind < 5) {
-                  return <SecondaryImg 
-                  onClick={() => {
-                    setCurrentSlide(ind)
-                    setShowSlider(true)}}
-                  key={i.id}>
-                    <Image src={i.image} layout="fill" alt='screen'></Image>
-                  </SecondaryImg>
-                }
+                        if (ind > 0 && ind < 5) {
+                            return <SecondaryImg 
+                                onClick={() => {
+                                    setCurrentSlide(ind)
+                                    setShowSlider(true)}}
+                                key={i.id}>
+                                <Image src={i.image} layout="fill" alt='screen'></Image>
+                            </SecondaryImg>
+                        }
 
-              })}
-            </SecondImgWrap>
-          </Media>
-    </>
-  )
+                    })}
+                </SecondImgWrap>
+            </Media>
+        </>
+    )
 }
 
 const Media = styled.div`
