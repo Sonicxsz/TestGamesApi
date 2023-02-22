@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { device } from '../../common/utils/size'
 import debounce from 'lodash.debounce'
 import FoundGameItem from '../../components/foundItem/foundItem';
-
+import GameService from '../../services/GameService'
 
 
 
@@ -23,14 +23,16 @@ function Header() {
         setSearchLocal(e.target.value);
         usDeb(e.target.value);
     };
+    const {findByName} = GameService()
+
+    const changeGameList = async () => {
+        const res = await findByName(serverSearch)
+        setGames(res.results)
+    }
 
     useEffect(() => {
         if (serverSearch.length > 1) {
-            const baseUrl = 'https://api.rawg.io/api/games?'
-            fetch(`${baseUrl}key=ecde0efd01614fc68d0ef9efb4520852&dates=2007-01-01,2023-12-31&page_size=5&page=1&search=
-                    ${serverSearch}`)
-                .then(res => res.json())
-                .then(res => setGames(res.results))
+            changeGameList()
         } else {
             games.length > 0 && setGames([])
         }
@@ -46,11 +48,13 @@ function Header() {
             </Link>
             <SearchInput onChange={onChangeInp} value={searchLocal} placeholder='search' type="text" />
             {searchLocal.length > 1 && <SearchDrop>
-                {games.map(i => <FoundGameItem
-                    setGames={setGames}
-                    setSearchLocal={setSearchLocal}
-                    setServerSearch={setServerSearch}
-                    link={`${i.id}`} key={i.id} img={i.background_image} text={i.name} />)}
+                {games.map(i => {
+                    return <FoundGameItem
+                        setGames={setGames}
+                        setSearchLocal={setSearchLocal}
+                        setServerSearch={setServerSearch}
+                        link={`${i.id}`} key={i.id} img={i.background_image} text={i.name} />
+                })}
             </SearchDrop>}
         </HeaderWrapper>
 

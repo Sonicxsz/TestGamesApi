@@ -6,14 +6,14 @@ import styled from 'styled-components'
 import { device } from '../../common/utils/size'
 
 
-function Slider(props) {
-    const { img, number, closeSlider } = props;
+function Slider({img, number, closeSlider}) {
     const [pages, setPages] = useState([]);
-
     const [current, setCurrent] = useState(number);
+
     useKey('ArrowLeft', handlerClickPrev);
     useKey('ArrowRight', handlerClickNext);
     useKey('Escape', handleClose);
+    
     useEffect(() => {
         setPages(img)
     }, []);

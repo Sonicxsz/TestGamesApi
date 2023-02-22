@@ -1,9 +1,9 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useRef } from 'react';
 import styled from 'styled-components';
 import { device } from '../../common/utils/size';
 import { Pc, Ps, Xb, Nt, MenuIcon } from '../../public/icons';
 import { Context } from '../../common/context';
-
+import { useOnClickOutside } from '../../common/hooks/useOutsideClick';
 
 
 
@@ -25,13 +25,17 @@ function Panel() {
 
     const FilterValues = ['&platforms=4', '&platforms=18,187', '&platforms=1,14,186', '&platforms=7', ''];
     const { setActialPlatform, setOrder } = useContext(Context);
+    const dropRef = useRef(null)
+    const brgRef = useRef(null)
 
+    useOnClickOutside(dropRef, () => setShowSort(false))
+    useOnClickOutside(brgRef, () => setShowFilter(false))
 
     return (
         <>
             <SettingPanel>
                 <> <DropDownButton onClick={() => setShowSort(!showSort)}>Order: {sort[activeSort]}</DropDownButton>
-                    {showSort && <DropDowm>
+                    {showSort && <DropDowm ref={dropRef}>
                         {sort.map((i, ind) => ind === activeSort 
                             ? <li current="rgb(94, 171, 247)">{i}</li> 
                             : <li onClick={() => {
@@ -42,8 +46,8 @@ function Panel() {
                     </DropDowm>}</>
 
                 <Filter>
-                    <BurgerButton>
-                        <MenuIcon onClick={() => {
+                    <BurgerButton >
+                        <MenuIcon ref={brgRef} onClick={() => {
                             setShowFilter(!showFilter)
                         }} />
                     </BurgerButton>

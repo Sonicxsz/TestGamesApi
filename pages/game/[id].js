@@ -7,36 +7,35 @@ import InformationComponent from '../../components/Information/Information'
 import Slider from '../../modules/slider/Slider'
 import MediaComponent from '../../components/media/media'
 import AboutComponent from '../../modules/about/about'
+import GameService from '../../services/GameService'
 
-
-function SingleGame(props) {
-    const {result, resultImages} = props;
-    const { background_image } = result;
+function SingleGame({responseGame, responseImages}) {
     const [showSlider, setShowSlider] = useState(false)
     const [currentSlide, setCurrentSlide] = useState(0)
+    
     const [fullText, setFullText] = useState(false)
 
     return (
 
-        <Wrapper img={background_image}>
+        <Wrapper img={responseGame.background_image}>
             <Head>
-                <title>Single Page</title>
+                <title>Game full page</title>
                 <meta name="keywords" content='games,nintendo, pc, ps, xbox' />
                 <meta charSet='utf-8'/>
             </Head>
             <FilterWrapper>
                 <Header />
                 <Content>
-                    <AboutComponent result={result} fullText={fullText}  setFullText={setFullText}/>
+                    <AboutComponent result={responseGame} fullText={fullText}  setFullText={setFullText}/>
                     <MediaComponent 
                         setShowSlider={setShowSlider}
                         setCurrentSlide={setCurrentSlide}
-                        results={resultImages.results} />
-                    <InformationComponent  data={result}/>
+                        results={responseImages.results} />
+                    <InformationComponent  data={responseGame}/>
                 </Content>
         
             </FilterWrapper>
-            {showSlider && <Slider closeSlider={setShowSlider} number={currentSlide} img={resultImages.results} />}
+            {showSlider && <Slider closeSlider={setShowSlider} number={currentSlide} img={responseImages.results} />}
        
         </Wrapper>
     )
@@ -45,13 +44,11 @@ function SingleGame(props) {
 
 
 export async function getServerSideProps({ params }) {
-    const baseUrl = 'https://api.rawg.io/api/games/'
-    const response = await fetch(`${baseUrl}${params.id}?key=ecde0efd01614fc68d0ef9efb4520852`)
-    const images = await fetch(`${baseUrl}${params.id}/screenshots?key=ecde0efd01614fc68d0ef9efb4520852`)
-    const result = await response.json()
-    const resultImages = await images.json()
+    const {getSingleGame} = GameService()
+    const {responseGame, responseImages} = await getSingleGame(params.id)
+
     return {
-        props: { result, resultImages }
+        props: { responseGame, responseImages }
     }
 }
 

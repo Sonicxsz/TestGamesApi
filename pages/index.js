@@ -6,13 +6,11 @@ import GameService from '../services/GameService';
 import { Context } from '../common/context';
 
 
-export default function Home(props) {
-    const {results} = props;
-
-    const [games, setGames] = useState(results); // Массив игр для отрисовки
+export default function Home({results}) {
+    const [games, setGames] = useState(results); 
     const [firstLoad, setFirstLoad] = useState(true); // Предотвращения повторного запроса при первом рендеринге
-    // настройки для запроса
-    const [page, setPage] = useState(2); // Номер страницы 
+
+    const [numberOfPage, setNumberOfPage] = useState(2);
     const [actualPlatform, setActialPlatform] = useState('');// Платформа
 
     const [order, setOrder] = useState('&ordering=-metacritic&metacritic=1,100'); // Сортировка по рейтингу или дате выхода
@@ -20,40 +18,43 @@ export default function Home(props) {
  
 
 
-    const {getAllGames} = GameService(); // Сервис для запроса
+    const {getMoreGames} = GameService(); // Сервис для запроса
 
     // Функция для запроса с автоматической дозагрузкой
-    const onRequest = (page, order, platform) =>{
-        getAllGames(page, order, platform)
-            .then(res => {
-                setGames(games => [...games,...res])
-                setPage(page => page + 1)
-                setFetching(false)
-            })
-            .catch(err => console.log(err))
+    const onRequest = async(page, order, platform) =>{
+      const res = await getMoreGames(page, order, platform)
+        setGames(games => [...games,...res])
+        setNumberOfPage(numberOfPage => numberOfPage + 1)
+        setFetching(false)
     }
 
 
     // Функция для запроса при изменении фильтра или сортировки
-    const onFilterChangeRequest = ( order, platform ) =>{
-        getAllGames(1, order, platform)
-            .then(res => {
-                setGames(games => [...res])
-                setPage(page => page + 1)
-                setFetching(false)
-            })
+    const onFilterChangeRequest = async( order, platform ) =>{
+      const pageNumber = 1;
+      const res = await getMoreGames(pageNumber, order, platform)
+        setGames([...res])
+        setNumberOfPage(numberOfPage => numberOfPage + 1)
+        setFetching(false)
     }
-
+    
+    const scrollLoad = (e) => {
+      if(e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop + window.innerHeight) < 100){
+          setFetching(true)
+      }
+  }
 
     // Отслеж скролла для подгрузки
     useEffect(() =>{
+      if(fetching){
+        onRequest(numberOfPage, order, actualPlatform)
+      }
         document.addEventListener('scroll', scrollLoad)
     
         return () =>{
             document.removeEventListener('scroll', scrollLoad)
         }   
-    },[])
-
+    },[fetching])
 
 
     useEffect(() =>{
@@ -65,19 +66,7 @@ export default function Home(props) {
             setFirstLoad(false)
         }
     },[order, actualPlatform])
-
-    useEffect(() =>{
-        if(fetching){
-            onRequest(page, order, actualPlatform)
-        }
-    },[fetching])
-
-
-    const scrollLoad = (e) => {
-        if(e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop + window.innerHeight) < 100){
-            setFetching(true)
-        }
-    }
+  
   
     return (
         <Context.Provider value={{
@@ -90,8 +79,6 @@ export default function Home(props) {
                 <meta charSet='utf-8'/>
             </Head>
             <Layout>
-     
-      
                 {games.length > 0 && games.map(i => <GameItem key={i.id}
                     platforms={i.platforms} 
                     name={i.name}
@@ -104,14 +91,11 @@ export default function Home(props) {
     )
 }
 
-
-// Статический метод для реализации ssr и получения начальных данных для рендера страницы на сервере
 export async function getStaticProps(ctx){
-    const baseUrl = 'https://api.rawg.io/api/games?key=ecde0efd01614fc68d0ef9efb4520852&dates=2007-01-01,2023-12-31'
-    let response = await fetch(`${baseUrl}&page_size=16&page=1&ordering=-metacritic&metacritic=1,100`)
-
-    response = await response.json()
+    const {getStartData} = GameService()
+    const res = await getStartData()
+ 
     return {
-        props:response
+        props:res
     }
 }
