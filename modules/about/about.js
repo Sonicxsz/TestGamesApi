@@ -7,14 +7,11 @@ import { Pc, Ps, Xb, Nt } from '../../public/icons';
 function AboutComponent(props) {
     const {result, fullText, setFullText} = props;
     const { name, description_raw, platforms } = result;
-    const FilterIcons = [<Pc key={1} />, <Ps key={2} />, <Xb key={3} />, <Nt key={4} />];
+    const FilterIcons = [{name: 'PC', comp:<Pc key={1} />}, {name: 'PlayStation 4', comp:<Ps key={2} />}, {name: 'Xbox One',comp:<Xb key={3} />}, {name:'Nintendo Switch',comp:<Nt key={4} />}];
   
-    let platform = platforms.map(i => i.platform.id).map((i) => {
-        if (i === 4) return FilterIcons[0]
-        if (i === 18 || i === 16 || i === 187) return FilterIcons[1]
-        if (i === 1 || i === 14 || i == 186) return FilterIcons[2]
-        if (i === 7) return FilterIcons[3]
-    });
+    let platform = platforms.map(i => i.platform.name)
+
+    
 
     platform = [...new Set(platform)];
 
@@ -23,7 +20,9 @@ function AboutComponent(props) {
             <About>
                 <H2>{name}</H2>
                 <Platforms>
-                    {platform.map(i => i)}
+                    {FilterIcons.map(i => {
+                      return platform.includes(i.name) && i.comp
+                    })}
                 </Platforms>
                 <Text>
                     <H3>About</H3>
